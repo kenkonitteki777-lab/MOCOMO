@@ -56,3 +56,24 @@ Mocoは先生やヒーローではなく「そばにいる友達」。Moyanは�
 
 Workへの最初の指示:
 「この引継書を唯一の要約ではなく起点として読み、GitHubとSupabaseの実状態を再検証してください。矛盾があれば実状態を優先して引継書を更新し、そのままImmediate execution orderを止まらず進めてください。ユーザー操作が必要な時だけ、最短リンク付きで指示してください。」
+
+## Work verification / implementation — 2026-10-06
+
+実状態を再検証して引き継ぎ済み。元の方針・順序・AppDeploy禁止は継続。
+
+1. GitHub main 初期HEAD 60425ed342af3d1a6648480d0ac4a4f98b60094b。Next.js初期画面のみだった。
+2. Supabase xoqawubwmuwvsrvokmxi はACTIVE_HEALTHY、9テーブル、全RLS、owner/parent所有チェック、security advisor指摘0。
+3. 公開キーだけを使う接続コード、.env.example、バージョン固定とlockfileを追加。service_roleは不要。メール認証enabled、signup可、メール確認必須をAPI実測。
+4. mocomo_create_child / mocomo_record_memoryを追加。SECURITY INVOKER、authenticatedだけEXECUTE可。記憶・world_state・creations・play_sessionsを原子的に保存し、同じevent UUIDの再送は重複しない。保存失敗時の再試行IDを維持。
+5. TODAY/WORLD/PLAY/BOOK/FAMILYを操作可能に。5つの小さな遊び、端末記憶、保護者認証UI、子プロフィール、クラウド記憶、記憶由来の8ページ絵本、絵本保存、静かな表示設定。
+6. Mocoの仮SVGマスター3表情を統合。10キャラの個別アセットと商用最終品質は未完成。docs/CHARACTER-MASTER.md参照。ゲームは最初の操作プロトタイプであり最終商用品質ではない。
+7. unit 3件、スマホ/PC browser 3件、型チェック、production build成功。SQLトランザクションテストでowner保存・原子的記録・重複再送・他家庭の読書禁止を確認。テストデータはrollback。匿名REST読取200/0行、RPC書込401。security advisor指摘0。
+8. Vercelプラグインはインストール済みと確認したが、この実行セッションには公開用ツールが露出していない。Vercelプロジェクト接続・本番公開・公開URLは未確認。次のターンで接続/利用可能ツールを再検証し、重複インストールを案内しない。
+
+### Next actions in order
+- Vercel接続を確認してGitHubリポジトリをimportし、docs/DEPLOYMENT.mdの2つのbuild-time環境変数を設定してproduction deploy。
+- 得られたHTTPS URLでSupabase Auth Site URL / Redirect URLsを設定。
+- production URL、メール確認/ログイン、子プロフィール、クラウド保存/再読込、絵本保存を実機でQA。メール配送・SMTPはまだ未検証。
+- 最終キャラアセット、ゲーム深度、保存済み絵本ライブラリ、削除/エクスポート、複数プロフィールの一連テスト、親ゲート強化へ改善を継続。
+
+Guest記憶は端末だけ（最大1000）。ログイン時は自動アップロードしない。クラウド世界は家庭/子プロフィールごとに分離。保護者ゲートは自己申告であり年齢確認ではない。生年月日は収集していない。
