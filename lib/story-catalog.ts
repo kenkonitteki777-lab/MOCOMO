@@ -1,5 +1,6 @@
 import {friendshipStory} from './friendship-story';
-export type PictureStory = {id:string;title:string;subtitle:string;description:string;question:string;game?:string;pages:readonly {title:string;image:string;alt:string;text:string}[]};
+import {pinoStory} from './pino-story';
+export type PictureStory = {id:string;title:string;subtitle:string;description:string;question:string;game?:string;playLabel?:string;musicTheme?:'cloud'|'pino';quietScenes?:readonly number[];pages:readonly {title:string;image:string;alt:string;text:string}[]};
 export const renStory:PictureStory={
  id:'ren-wait-v1',title:'まって、いっしょに',subtitle:'モコモとレンのおはなし',description:'歩幅のちがいと、気持ちを伝える6ページ',game:'jump',question:'レンが戻ってきたとき、モコモはどう感じたのかな。',
  pages:[
@@ -11,4 +12,4 @@ export const renStory:PictureStory={
   {title:'となりで、ぽん',image:'/stories/ren-wait/06-together.webp',alt:'夕焼けの低い雲から二人が並んで小さく跳ぶ。レンはモコモを見て、二人は笑う。',text:'次の雲の前で、レンがモコモを見た。\n「ここ、いけそう？」\n「うん。せーの」\nとなりで、ぽん。ふたりの雲が、同じようにふくらんだ。\n「まって」も言える。そう思うと、もうひとつ、跳んでみたくなった。'},
  ]
 };
-export const pictureStories:readonly PictureStory[]=[{...friendshipStory,description:'出会いと仲直りを描く、6ページの絵本',question:'モコモがスイを見たとき、何を思ったのかな。'},renStory];
+export const pictureStories:readonly PictureStory[]=[{...friendshipStory,description:'出会いと仲直りを描く、6ページの絵本',question:'モコモがスイを見たとき、何を思ったのかな。'},renStory,pinoStory];

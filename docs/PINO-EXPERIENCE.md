@@ -14,7 +14,7 @@
 
 ## 次の絵本: ふたつのいろ、ひとつのにじ
 
-8場面の制作案。現時点では制作仕様のみで、読める絵本/新しい画像はまだ追加していない。
+8場面の制作案。8場面の本文と画像を実装。本文/作品仕様の正は lib/pino-story.ts。画像は public/stories/pino-colors/、1536×1024 WebP8点。ゲーム完了→絵本→色遊び、仲間紹介→絵本を接続。読み進めても実記憶を増やさない。
 
 1. 出会い: ピノが雲の庭で色のしずくを並べている。モコモは自分の好きな色を持って近づく。「その色で、なにができるのかな。」
 2. ふれあい: ひとつずつ色を置くと小さい虹が生まれる。二人が同じ高さで驚く。文字を減らし、発見を見せる。
@@ -26,3 +26,11 @@
 8. 経験による変化: 次の虹を作る前に、モコモが「どの色がすき？」と聞き、ピノも相手の返事を待つ。色遊びへの入口を置く。読み終わりの正解質問/評価はしない。
 
 制作基準: 同じキャラ造形/3D質感、場面ごとの視線とポーズ、絵だけでも分かる因果、1場面1つの感情変化、対立部分は音を薄く、仲直りで色の旋律を戻す。子ども向け本文は「もこも」「ぴの」、ブランド/作品紹介は「モコモ」「ピノ」。全アプリの表記統一は別途見直す。
+
+## 作画と音
+
+組込み画像制作で各場面を別々に生成。参照は public/characters/companions-v2.png の中段右ピノと public/stories/sui-star/01-meet.webp のモコモ/画風。ピノの2つの不揃い丸い頭、モコモの3つの頭の雲、色/質感/小さい手足を維持。参照画像の原画は変更しない。WebP化は形式変換のみ。合計919430 bytes。画像から手で修正した専用リグや音声読み聞かせはまだない。
+
+共通プロンプト: illustration-story; ONE full-bleed premium Japanese children's picture-book landscape 1536x1024; exact approved peach Pino with two unequal round head lobes and white Moco with three cloud head tufts; tactile felt-like 3D softness; same cloud garden; translucent pink/blue color droplets; gaze/hands/posture/mouth convey emotion; no text, panels, clothes, other cast, danger. 場面指定は本書の1〜8に対応（出会い、小さい虹、ピノの夢中、モコモの寂しさ、伝える、場所をあける、二人の虹、次の行動変化）。
+
+拡大モードのBGMは作品のmusicTheme/quietScenes指定。ピノは独自の32拍旋律と64BPM、3〜5ページを疎にする。旧作品の旋律/60BPM/静かな3〜4ページは維持。再生は明示操作、音量/退出/背景化停止は既存仕様。録音/歌唱/商用ミックス品質を完成とは主張しない。

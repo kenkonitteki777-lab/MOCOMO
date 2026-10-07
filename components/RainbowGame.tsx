@@ -6,7 +6,7 @@ import Scene from './Scene';
 import {gardenPalette} from '../lib/world-garden';
 import {createPinoSound} from '../lib/pino-sound';
 const skies=['ひる','こさめ','ゆうがた'] as const;
-export default function RainbowGame({busy,quiet,finish,close}:{busy:boolean;quiet:boolean;finish:(payload:Record<string,unknown>)=>Promise<boolean>;close:()=>void}){
+export default function RainbowGame({busy,quiet,finish,close,onStory}:{onStory?:()=>void;busy:boolean;quiet:boolean;finish:(payload:Record<string,unknown>)=>Promise<boolean>;close:()=>void}){
  const [colors,setColors]=useState(['ももいろ','きいろ','そらいろ']);const [band,setBand]=useState(0);const [sky,setSky]=useState(0);const [changed,setChanged]=useState(false);
  const [reaction,setReaction]=useState<'paint'|'listen'|'hello'|null>(null);const [caption,setCaption]=useState('いろの雲を押すと、虹がかわるよ。');const [done,setDone]=useState(false);const [saving,setSaving]=useState(false);
  const [replayReady,setReplayReady]=useState(false);
@@ -29,7 +29,7 @@ export default function RainbowGame({busy,quiet,finish,close}:{busy:boolean;quie
  async function save(){if(locked||saveLock.current)return;saveLock.current=true;setSaving(true);try{if(await finish({color:current,colors,sky:skies[sky],companion:'pino'})){audio.current?.stop();audio.current=null;setSoundOn(false);setDone(true);setReplayReady(false);if(timer.current)clearTimeout(timer.current);timer.current=setTimeout(()=>setReplayReady(true),400);}}finally{saveLock.current=false;setSaving(false);}}
  return <section className={`game-room rich-game pink pino-room ${quiet?'pino-quiet':''}`} aria-labelledby="game-title">
   <button className="text-button" disabled={locked} onClick={close}>← あそびをえらぶ</button><p className="eyebrow">ぴのの、いろの雲</p><h2 id="game-title">にじの道</h2>
-  {done?<><Scene scene="rainbow" className="game-complete"><Moco mood="wonder"/><Character id="pino" mood="wonder"/></Scene><h3>きみの虹が、できたね。</h3><p>選んだ色は、雲の庭と記憶の絵本に残るよ。</p><button disabled={!replayReady} onClick={()=>{setDone(false);setCaption('同じ色でも、新しい色でも。もういちど遊ぼう。');}}>もういちど、色であそぶ</button><button disabled={!replayReady} onClick={close}>別のあそびをえらぶ</button></>:<>
+  {done?<><Scene scene="rainbow" className="game-complete"><Moco mood="wonder"/><Character id="pino" mood="wonder"/></Scene><h3>きみの虹が、できたね。</h3><p>選んだ色は、雲の庭と記憶の絵本に残るよ。</p><button disabled={!replayReady} onClick={()=>{setDone(false);setCaption('同じ色でも、新しい色でも。もういちど遊ぼう。');}}>もういちど、色であそぶ</button><button disabled={!replayReady} onClick={close}>別のあそびをえらぶ</button>{onStory&&<button className="story-play-door" disabled={!replayReady} onClick={onStory}>ピノのおはなしを読む</button>}</>:<>
    <Scene scene="rainbow" className={`pino-stage pino-sky-${sky}`}>
     <div className="pino-sky-wash" aria-hidden="true"/>
     {sky===1&&<div className="pino-raindrops" aria-hidden="true"><span>·</span><span>·</span><span>·</span></div>}
