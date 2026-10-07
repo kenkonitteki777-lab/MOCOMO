@@ -1,4 +1,4 @@
-# MOCOMO character master · v0.3
+# MOCOMO character master · v0.4
 
 ## Selected reference
 
@@ -21,4 +21,12 @@ Built-in image generation / identity-preserve。上記ブランドガイド中�
 
 ## Remaining work
 
-横・背面、表情追加、アニメーションの細部、印刷/グッズ用途の検証、キャラクターごとの個別マスターは未完了。ともだち一覧の雲マークは仮表示。名前・役割はCHARACTER-BIBLE.mdを参照し、画像中の別案と勝手に混在させない。
+横・背面、表情追加、アニメーションの細部、印刷/グッズ用途の検証、キャラクターごとの個別マスターは未完了。仲間9人は個別アトラスに置換済み。名前・役割はCHARACTER-BIBLE.mdを参照し、画像中の別案と勝手に混在させない。
+
+## Companion identities and expression atlases — 2026-10-07
+
+ユーザーは色だけの派生案を却下し、頭の形・体つき・表情の違いを要求。その後の9人の造形は「方向性はいい」と評価し、表情変化の追加を指示。Mocoは既に了承された画像を継続する。
+
+`public/characters/companions-v2.png` / `companions-wonder.png` / `companions-rest.png`: 1254×1254 RGBA、3列×3段。左上から Sui / Ren / Toto / Luna / Mogu / Pino / Mini / Kuu / Nico。同じ造形・配置で通常、発見/喜び、休憩の顔を制作。サイズ差を保つため各段の表示窓は y=0/h=510、510/420、930/324。列幅418。頭や足を切り落とさない。
+
+`components/Character.tsx` が名前、旧IDの互換表示、表情、比率を共通管理。ゲーム中のジャンプ・発見・食事・虹の色変更でわくわく、休憩でひとやすみに切替。絵本も記憶に応じて同じ表情を使う。商用最終マスターの承認、横・背面や連続アニメーションは未完了。
