@@ -1,0 +1,21 @@
+import {test,expect} from '@playwright/test';
+test('landscape immersion enlarges art, plays original music and releases audio on close',async({page})=>{
+ await page.addInitScript(()=>{const Original=window.AudioContext;const contexts:AudioContext[]=[];Object.assign(window,{qaMusicContexts:contexts});window.AudioContext=class extends Original{constructor(){super();contexts.push(this);}};});
+ await page.goto('/');await page.getByRole('button',{name:/えほん BOOK/}).click();await page.getByRole('button',{name:/モコモとスイのおはなし/}).click();
+ await page.getByRole('button',{name:'絵本にひたる · 大きく読む'}).click();const reader=page.getByRole('dialog',{name:'絵本にひたるモード'});await expect(reader).toBeVisible();
+ await page.setViewportSize({width:844,height:390});
+ await expect(reader.getByText('1 / 6',{exact:true})).toBeVisible();
+ await reader.getByRole('button',{name:'大きな絵本の次のページ'}).click();await expect(reader.getByText('ふたりで、みつけた',{exact:true})).toBeVisible();
+ await reader.getByRole('button',{name:'絵だけ大きく'}).click();await expect(reader.locator('.immersive-spread section')).toBeHidden();
+ const art=await reader.getByRole('img').boundingBox();expect(art!.width).toBeGreaterThan(700);
+ await reader.getByRole('button',{name:'BGMをきく'}).click();await expect(reader.getByRole('button',{name:'BGMをとめる'})).toBeVisible();
+ expect(await page.evaluate(()=>(window as unknown as {qaMusicContexts:AudioContext[]}).qaMusicContexts[0].state)).toBe('running');
+ const slider=reader.getByRole('slider',{name:'BGMの音量'});await slider.focus();await slider.press('Home');await slider.press('ArrowRight');await expect(slider).toHaveValue('0.05');
+ await reader.getByRole('button',{name:'ことばも読む'}).click();
+ expect(await reader.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
+ await page.screenshot({path:'test-results/mocomo-immersive-landscape.png'});
+ await page.setViewportSize({width:390,height:844});expect(await reader.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
+ await reader.getByRole('button',{name:'閉じる',exact:true}).click();await expect(reader).toBeHidden();
+ await expect(page.locator('.friendship-book .book-controls')).toContainText('2 / 6');
+ expect(await page.evaluate(()=>(window as unknown as {qaMusicContexts:AudioContext[]}).qaMusicContexts[0].state)).toBe('closed');
+});
