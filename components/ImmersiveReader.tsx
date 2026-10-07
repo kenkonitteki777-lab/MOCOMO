@@ -8,8 +8,9 @@ export default function ImmersiveReader({index,onTurn}:{index:number;onTurn:(ind
  function stop(){music.current?.stop();music.current=null;setPlaying(false);}
  function close(){stop();setActive(false);setArtOnly(false);dialog.current?.close();if(document.fullscreenElement===dialog.current)void document.exitFullscreen();}
  function open(){dialog.current?.showModal();setActive(true);}
- function toggleMusic(){if(playing){stop();return;}try{music.current=createMocomoMusic();music.current.setVolume(volume);setPlaying(true);setNotice('');}catch{setNotice('この端末では音を再生できません。');}}
+ function toggleMusic(){if(playing){stop();return;}try{music.current=createMocomoMusic(index);music.current.setVolume(volume);music.current.setScene(index);setPlaying(true);setNotice('');}catch{setNotice('この端末では音を再生できません。');}}
  useEffect(()=>{function hide(){if(document.hidden){music.current?.stop();music.current=null;setPlaying(false);}}document.addEventListener('visibilitychange',hide);return()=>{document.removeEventListener('visibilitychange',hide);music.current?.stop();};},[]);
+ useEffect(()=>{music.current?.setScene(index);},[index]);
  return <>
   <button className="immerse-launch" onClick={open}>絵本にひたる · 大きく読む</button>
   <dialog ref={dialog} className={`immersive-reader ${artOnly?'art-only':''}`} aria-label="絵本にひたるモード" onCancel={close} onKeyDown={e=>{if(e.target instanceof HTMLInputElement)return;if(e.key==='ArrowRight'&&index<5){e.preventDefault();onTurn(index+1);}if(e.key==='ArrowLeft'&&index>0){e.preventDefault();onTurn(index-1);}}}>

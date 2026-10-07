@@ -86,7 +86,7 @@ export default function Home() {
  async function storeBook(){if(!sb || !user || !child || busy || !pages.length)return;setBusy(true);try{const {error}=await sb.from('stories').insert({child_id:child,title:'雲の上の、きみとのおはなし',body:{pages},source_event_ids:pages.map(p=>p.id)});if(error)throw error;setSaveStory(true);setNotice('絵本をおうちに保存しました。');}catch{setNotice('絵本を保存できませんでした。');}finally{setBusy(false);}}
  function navigate(next:Tab){if(busy)return;setTab(next);setActive(null);setGate(false);setNotice('');}
  return <main className={quiet?'quiet':''}>
-  <header><a className="brand" href="/" aria-label="MOCOMO ホーム">mocomo<span>雲の上の、小さな世界</span></a><button className="parent-link" onClick={()=>navigate('FAMILY')} disabled={busy}>保護者の方へ ↗</button></header>
+  <header><a className="brand" href="/" aria-label="モコモ ホーム"><img className="brand-logo" src="/brand/mocomo-wordmark-v1.webp" width="720" height="360" alt="モコモ"/><span>雲の上の、小さな世界</span></a><button className="parent-link" onClick={()=>navigate('FAMILY')} disabled={busy}>保護者の方へ ↗</button></header>
   {!ready && <p role="status" className="notice">記憶を読み込んでいます。 <button onClick={()=>window.location.reload()}>再読み込み</button></p>}
   {notice && <p role="status" className="notice">{notice}</p>}
   {tab==='TODAY' && <>

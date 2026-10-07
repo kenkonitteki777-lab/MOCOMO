@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 test('landscape immersion enlarges art, plays original music and releases audio on close',async({page})=>{
  await page.addInitScript(()=>{const Original=window.AudioContext;const contexts:AudioContext[]=[];Object.assign(window,{qaMusicContexts:contexts});window.AudioContext=class extends Original{constructor(){super();contexts.push(this);}};});
- await page.goto('/');await page.getByRole('button',{name:/えほん BOOK/}).click();await page.getByRole('button',{name:/モコモとスイのおはなし/}).click();
+ await page.goto('/');await page.setViewportSize({width:320,height:740});const logo=page.getByRole('img',{name:'モコモ',exact:true});await expect(logo).toBeVisible();expect(await logo.evaluate(e=>(e as HTMLImageElement).complete&&(e as HTMLImageElement).naturalWidth===720)).toBe(true);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:'test-results/mocomo-wordmark-mobile.png'});await page.getByRole('button',{name:/えほん BOOK/}).click();await page.getByRole('button',{name:/モコモとスイのおはなし/}).click();
  await page.getByRole('button',{name:'絵本にひたる · 大きく読む'}).click();const reader=page.getByRole('dialog',{name:'絵本にひたるモード'});await expect(reader).toBeVisible();
  await page.setViewportSize({width:844,height:390});
  await expect(reader.getByText('1 / 6',{exact:true})).toBeVisible();

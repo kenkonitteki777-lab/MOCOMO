@@ -112,3 +112,11 @@ Vercel本番URLは https://mocomo-lake.vercel.app/ 。2026-10-07にユーザー�
 「雲のさんぽ」の独自旋律をWeb Audioで試作。明示操作で開始、音量調整、閉じる/バックグラウンド化で停止。歌唱音源は未制作。歌詞案と制作方針は docs/MOCOMO-SOUND.md。BGMは全場面共通の試作で、商用の録音/ミックス/場面別演出は未完成。
 
 検証: browser2件（新モードと従来6ページ絵本）、unit5件、production build/型チェック成功。844×390の横向きで拡大・ページ移動・音量操作・AudioContextのrunning/closed、390×844への回転時の横はみ出しなし、閉じた後のページ保持を確認。公開確認はGitHub/Vercel statusと本番UIで行う。Supabase変更なし。
+
+## Japanese wordmark and cloud-top arrangement — 2026-10-07
+
+ユーザーが読みやすい名前ロゴと、多音源で癒される雲の上のBGMを要求。A案「モコモ」主役＋小さなMOCOMO補助表記をヘッダーに試用。新規ロゴの正は public/brand/mocomo-wordmark-v1.webp / docs/BRAND-WORDMARK.md。了承済みキャラ本体は維持。
+
+BGMを60BPMの4層（柔らかい鍵盤風、和音、星のベル、静かな風）とステレオ余韻に改修。3〜4ページは音数/ベルを減らし、5〜6ページで戻す。既存曲・外部サンプルを使用しないWeb Audioの合成音で、プロの録音/ミックスや歌唱音源は未制作。次のステップは読み聞かせ・ページ構成と音の呼吸の調整、別の仲間との物語。最終商用品質/歌の完成とは区別する。
+
+検証: 320pxヘッダーのロゴ読込/横はみ出しなし、横向き絵本/BGM再生/音量/停止のbrowserテスト、従来6ページ絵本のbrowserテスト、型チェックとproduction build成功。ロゴ下の英字と世界観コピーの間隔は目視で調整。商用録音品質や歌唱の完成は主張しない。
