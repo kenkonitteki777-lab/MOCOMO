@@ -2,9 +2,9 @@ import {test,expect} from '@playwright/test';
 test('cast artwork, food play and illustrated story preserve the actual choices',async({page})=>{
  await page.goto('/');await page.getByRole('button',{name:/せかい WORLD/}).click();
  await expect(page.locator('.friends .companion')).toHaveCount(9);
- await expect(page.getByRole('button',{name:/ピノ/})).toBeVisible();
+ await expect(page.getByRole('button',{name:'ピノ',exact:true})).toBeVisible();
  const companionImage=await page.locator('.friends .companion-art').first().evaluate(async e=>{const im=new Image();im.src=getComputedStyle(e).backgroundImage.slice(5,-2);await im.decode();return im.naturalWidth>0;});expect(companionImage).toBe(true);
- await page.getByRole('button',{name:/ピノ/}).click();await expect(page.getByRole('status')).toContainText('保存');
+ await page.getByRole('button',{name:'ピノ',exact:true}).click();await expect(page.getByRole('article',{name:'ピノの紹介'})).toBeVisible();await page.getByRole('button',{name:'ピノに、こんにちは',exact:true}).click();await expect(page.getByRole('status')).toContainText('保存');
  await page.getByRole('button',{name:/あそぶ PLAY/}).click();await page.getByRole('button',{name:/もぐもぐキッチン/}).click();
  await expect(page.getByRole('button',{name:'この時間を、記憶に'})).toBeDisabled();
  await page.getByRole('button',{name:/おにぎり/}).click();await page.getByRole('button',{name:'お皿にのせる'}).click();await page.getByRole('button',{name:'いっしょに、いただきます'}).click();

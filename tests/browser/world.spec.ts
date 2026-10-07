@@ -7,7 +7,7 @@ test('five activities persist memories, grow world, and make a real book',async(
  await page.getByRole('button',{name:/にじの道/}).click();await page.getByRole('button',{name:'そらいろ',exact:true}).click();await page.getByRole('button',{name:'この時間を、記憶に'}).click();await page.getByRole('button',{name:'別のあそびをえらぶ'}).click();
  await page.getByRole('button',{name:/もぐもぐキッチン/}).click();await page.getByRole('button',{name:/おにぎり/}).click();await page.getByRole('button',{name:'お皿にのせる'}).click();await page.getByRole('button',{name:'いっしょに、いただきます'}).click();await page.getByRole('button',{name:'この時間を、記憶に'}).click();await page.getByRole('button',{name:'別のあそびをえらぶ'}).click();
  await page.getByRole('button',{name:/ほっとタイム/}).click();await page.getByRole('button',{name:'ひと休みを、記憶に'}).click();await page.getByRole('button',{name:'別のあそびをえらぶ'}).click();
- await page.reload();await page.getByRole('button',{name:/せかい WORLD/}).click();await expect(page.getByText('虹の道 1')).toBeVisible();await expect(page.getByText('ひと休み 1')).toBeVisible();
+ await page.reload();await page.getByRole('button',{name:/せかい WORLD/}).click();await expect(page.getByRole('heading',{name:'きみの色の、虹'})).toBeVisible();await expect(page.getByText('ルナとひと休みした、やわらかい雲。なにもしない時間も、ここに。')).toBeVisible();
  await page.getByRole('button',{name:/えほん BOOK/}).click();await expect(page.getByText('1 / 6')).toBeVisible();await page.getByRole('button',{name:'次のページ'}).click();await expect(page.getByText('2 / 6')).toBeVisible();
  expect(errors).toEqual([]);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
  await page.screenshot({path:'test-results/mocomo-mobile.png',fullPage:true});

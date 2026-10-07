@@ -16,7 +16,7 @@ export function worldFrom(events: Memory[]) {
 export function memoryText(e: Memory) {
   const game = games.find(g => g.id === e.game_id);
   if (e.event_type === 'MEET') return `${characterName(e.character_id)}と、いっしょに過ごした。`;
-  return ({ PLAY: `${game?.name ?? '雲の上'}で、いっしょに遊んだ。`, DISCOVER: '雲のなかに、小さな星を見つけた。',
+  return ({ PLAY: `${game?.name ?? '雲の上'}で、いっしょに遊んだ。`, DISCOVER: `雲のなかに、${e.payload.item==='はっぱ'?'小さなはっぱ':e.payload.item==='ハート'?'やさしいハート':'小さな星'}を見つけた。`,
     CREATE: `${Array.isArray(e.payload.colors)&&e.payload.colors.every(c=>typeof c==='string')?e.payload.colors.join('、'):String(e.payload.color ?? 'きれいな色')}の虹を、いっしょにかけた。`, REST: 'ふわふわの雲で、ゆっくりひと休みした。', MEET: '' })[e.event_type];
 }
 export function storyFrom(events: Memory[]) {
