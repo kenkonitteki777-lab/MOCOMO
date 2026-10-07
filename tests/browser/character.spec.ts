@@ -4,7 +4,7 @@ test('Moco stays visible on small screens and responds to jumping and resting', 
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto('/');
   await expect(page.getByRole('img', { name: 'もこも・にっこり' })).toBeVisible();
-  const loaded = await page.locator('.moco').evaluate(async element => {
+  const loaded = await page.locator('.brand-mascot .moco').evaluate(async element => {
     const url = getComputedStyle(element).backgroundImage.slice(5, -2);
     const image = new Image();
     image.src = url;

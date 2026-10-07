@@ -15,7 +15,7 @@ test('landscape immersion enlarges art, plays original music and releases audio 
  expect(await reader.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
  await page.screenshot({path:'test-results/mocomo-immersive-landscape.png'});
  await page.setViewportSize({width:390,height:844});expect(await reader.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
- await reader.getByRole('button',{name:'閉じる',exact:true}).click();await expect(reader).toBeHidden();
+ await reader.getByRole('button',{name:'絵本にもどる',exact:true}).click();await expect(reader).toBeHidden();
  await expect(page.locator('.friendship-book .book-controls')).toContainText('2 / 6');
  expect(await page.evaluate(()=>(window as unknown as {qaMusicContexts:AudioContext[]}).qaMusicContexts[0].state)).toBe('closed');
 });

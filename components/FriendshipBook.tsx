@@ -2,12 +2,12 @@
 import { useRef, useState } from 'react';
 import ImmersiveReader from './ImmersiveReader';
 import { friendshipStory as story } from '../lib/friendship-story';
-export default function FriendshipBook(){
+export default function FriendshipBook({onHome}:{onHome?:()=>void}){
  const picture=useRef<HTMLElement>(null);const [index,setIndex]=useState(0);const page=story.pages[index];
  function turn(next:number){setIndex(next);picture.current?.scrollIntoView({block:'start',behavior:'auto'});}
  return <article className="friendship-book" aria-label={story.title}>
   <header className="friendship-heading"><p className="eyebrow">{story.subtitle}</p><h2>{story.title}</h2><p>出会って、すれちがって、もういちど。</p></header>
-  <ImmersiveReader index={index} onTurn={setIndex}/>
+  <ImmersiveReader index={index} onTurn={setIndex} onHome={onHome}/>
   <figure ref={picture} className="friendship-picture"><img key={page.image} src={page.image} width="1536" height="1024" alt={page.alt}/></figure>
   <section className="friendship-copy" aria-live="polite"><p className="story-title">{page.title}</p><p className="friendship-text">{page.text}</p></section>
   <div className="book-controls"><button aria-label="おはなしの前のページ" disabled={index===0} onClick={()=>turn(index-1)}>←</button><span aria-live="polite">{index+1} / {story.pages.length}</span><button aria-label="おはなしの次のページ" disabled={index===story.pages.length-1} onClick={()=>turn(index+1)}>→</button></div>

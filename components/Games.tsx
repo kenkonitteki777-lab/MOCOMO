@@ -20,7 +20,7 @@ export default function Games({id,busy,quiet,finish,close}:{id:string;busy:boole
  return <section className={`game-room rich-game ${game.color}`} aria-labelledby="game-title">
   <button className="text-button" onClick={close} disabled={busy}>← あそびをえらぶ</button>
   <p className="eyebrow">いっしょに、{game.verb}</p><h2 id="game-title">{game.name}</h2>
-  {done ? <><Scene scene={id as SceneId} className="game-complete"><Moco mood={id==='rest'?'rest':'wonder'}/><Character id={companion} mood={id==='rest'?'rest':'wonder'}/></Scene><h3>たのしかったね。</h3><p>いっしょに過ごした時間が、絵本の一場面になったよ。</p><button onClick={close}>雲の世界へ</button></> : <>
+  {done ? <><Scene scene={id as SceneId} className="game-complete"><Moco mood={id==='rest'?'rest':'wonder'}/><Character id={companion} mood={id==='rest'?'rest':'wonder'}/></Scene><h3>たのしかったね。</h3><p>いっしょに過ごした時間が、絵本の一場面になったよ。</p><button onClick={close}>別のあそびをえらぶ</button></> : <>
    <Scene scene={id as SceneId} className={`play-scene ${quiet?'still':''}`}>
     <Character id={companion} mood={mood} className="play-companion"/>
     {id==='jump' && <><button className="cloud-stage" aria-label="もこもとジャンプ" onClick={()=>setJump(n=>n+1)} disabled={busy} style={{left:`${[12,38,24,48][jump%4]}%`}}><Moco key={jump} mood={jump?'wonder':'happy'} className={jump&&!quiet?'jumping':''}/></button><div className="jump-clouds" aria-hidden="true"><span/><span/><span/></div></>}
