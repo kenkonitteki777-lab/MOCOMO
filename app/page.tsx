@@ -5,6 +5,7 @@ import Moco from '../components/Moco';
 import Games from '../components/Games';
 import Character from '../components/Character';
 import BookShelf from '../components/BookShelf';
+import CloudHome from '../components/CloudHome';
 import { gameCompanion } from '../lib/characters';
 import { getSupabase } from '../lib/supabase';
 import { characters, games, memoryText, readGuest, storyFrom, worldFrom, type EventType, type Memory } from '../lib/memory';
@@ -90,9 +91,7 @@ export default function Home() {
   {!ready && <p role="status" className="notice">記憶を読み込んでいます。 <button onClick={()=>window.location.reload()}>再読み込み</button></p>}
   {notice && <p role="status" className="notice">{notice}</p>}
   {tab==='TODAY' && <>
-   <section className="hero"><div className="hero-copy"><p className="eyebrow">HELLO, LITTLE WORLD</p><h1>きょうも、<br/>きみのそばに。</h1><p>あそんでも、なにもしなくても。<br/>ここには、もこもがいるよ。</p><button className="primary" disabled={!ready || busy} onClick={()=>void record('MEET',null)}>もこもに、こんにちは <span>↗</span></button><small>いつでも、自分のペースで。</small></div><div className="hero-scene"><span className="scene-star">✧</span><Moco/><span className="scene-flower">✿</span><span className="cloud-floor"/></div></section>
-   <section className="section-heading"><div><p className="eyebrow">A LITTLE SOMETHING</p><h2>きょう、なにする？</h2></div><span>好きなことから。</span></section>
-   <div className="game-grid">{games.map(g=><button className={`game-card ${g.color}`} key={g.id} disabled={!ready || busy} onClick={()=>{setTab('PLAY');setActive(g.id);}}><span className="game-icon">{g.icon}</span><small>{g.verb}</small><strong>{g.name}</strong><span className="card-arrow">↗</span></button>)}</div>
+   <CloudHome ready={ready} busy={busy} onHello={()=>void record('MEET',null)} onVisit={(destination,game)=>{navigate(destination);if(game&&!busy)setActive(game);}}/>
    <section className="memory-strip"><span>✧</span><div><h3>小さな時間が、世界の記憶に。</h3><p>{events.length?memoryText(events[events.length-1]):'はじめての記憶は、これから。'}</p></div><button onClick={()=>navigate('WORLD')}>みてみる →</button></section>
   </>}
   {tab==='WORLD' && <><div className="page-heading"><p className="eyebrow">OUR LITTLE WORLD</p><h1>きみと育つ、せかい。</h1><p>見つけた星、かけた虹、ひと休みの雲。<br/>どれも、いっしょに過ごした時間。</p></div><section className="world-scene"><div className="world-sky">{Array.from({length:Math.min(world.stars,12)},(_,i)=><span key={i} style={{left:`${8+(i*19)%85}%`,top:`${10+(i*13)%48}%`}}>✧</span>)}{world.rainbow_paths>0 && <div className="world-rainbow"/>}<Moco mood={world.rest_clouds?'rest':'happy'}/></div><div className="world-labels"><span>✧ 見つけた星 {world.stars}</span><span>⌒ 虹の道 {world.rainbow_paths}</span><span>☁ ひと休み {world.rest_clouds}</span></div></section><h2>いっしょに過ごした記憶</h2><div className="timeline">{events.length?events.slice(-30).reverse().map(e=><article key={e.id}><time>{new Date(e.occurred_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'long',day:'numeric'})}</time><p>{memoryText(e)}</p></article>):<p>まだ、まっさらな世界。もこもに会ってみよう。</p>}</div><h2>雲の上のともだち</h2><div className="friends">{characters.map(c=><button key={c[0]} disabled={!ready || busy} onClick={()=>void record('MEET',null,c[0])}><Character id={c[0]}/><strong>{c[1]}</strong><small>{c[2]}</small></button>)}</div></>}
