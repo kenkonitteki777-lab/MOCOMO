@@ -13,6 +13,6 @@ export default function FriendshipBook({story,initialIndex=0,onProgress,onHome,o
   <section className="friendship-copy" aria-live="polite"><p className="story-title">{page.title}</p><p className="friendship-text">{page.text}</p></section>
   <div className="book-controls"><button aria-label="おはなしの前のページ" disabled={index===0} onClick={()=>turn(index-1)}>←</button><span aria-live="polite">{index+1} / {story.pages.length}</span><button aria-label="おはなしの次のページ" disabled={index===story.pages.length-1} onClick={()=>turn(index+1)}>→</button></div>
   <div className="page-dots" aria-label="おはなしのページ">{story.pages.map((p,i)=><button key={p.image} aria-label={`おはなしの${i+1}ページへ`} aria-current={index===i?'page':undefined} onClick={()=>turn(i)}>{i+1}</button>)}</div>
-  {index===story.pages.length-1&&<aside className="reading-together"><p>{story.question}</p><small>話しても、もういちど読んでも。答えはひとつじゃないよ。</small><button className="text-button" onClick={()=>turn(0)}>はじめから、もういちど</button>{story.game&&onPlay&&<button className="story-play-door" onClick={()=>onPlay(story.game!)}>レンと、ふわふわの丘へ</button>}</aside>}
+  {index===story.pages.length-1&&<aside className="reading-together"><p>{story.question}</p><small>話しても、もういちど読んでも。答えはひとつじゃないよ。</small><button className="text-button" onClick={()=>turn(0)}>はじめから、もういちど</button>{story.game&&onPlay&&<button className="story-play-door" onClick={()=>onPlay(story.game!)}>{story.playLabel??'レンと、ふわふわの丘へ'}</button>}</aside>}
  </article>;
 }
