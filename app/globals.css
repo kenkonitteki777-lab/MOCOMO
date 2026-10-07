@@ -6,3 +6,4 @@
 .hero-scene .moco{transform:none;filter:drop-shadow(0 12px 14px #69859a18)}
 .cloud-floor{background:#ffffffb3;box-shadow:0 -12px 32px #ffffff70}
 @media(max-width:480px){.hero-scene{height:260px}.hero-scene .moco{width:260px;max-width:100%}}
+@media(max-width:480px){.hero h1{font-size:clamp(28px,8.3vw,36px)}.hero-scene{height:230px}.hero-scene .moco{width:230px}}

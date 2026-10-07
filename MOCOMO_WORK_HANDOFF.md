@@ -83,3 +83,5 @@ Guest記憶は端末だけ（最大1000）。ログイン時は自動アップ�
 ユーザーが下側の「MOCOMOキャラクターブランドガイド.png」を基準に指定。原資料をdocs/design-reference/moco-brand-guide.pngに保存し、従来の雲型仮SVGをガイドに沿う透過3表情アトラスに置換。造形の正はdocs/CHARACTER-MASTER.md v0.3と選択済み画像。過去の「仮SVG」「generic plush禁止」の記述は、この具体的なユーザー選択を上書きしない。
 
 Vercel本番URLは https://mocomo-lake.vercel.app/ 。2026-10-07にユーザーのimportで公開済み、ゲストの端末記憶・世界・絵本を実測済み。上の未接続・未公開の履歴は現在の状態ではない。本番Supabase環境変数とメール認証/クラウド保存の動作は引き続き未検証。
+
+改修検証: unit 3件、browser 4件、型チェック、production build成功。320/390/760/1440pxで横はみ出しなし。新アセット読込・通常/ジャンプ後wonder/休憩restを確認。本番のVercel commit status successと公開ページの新画像の全身表示を確認済み。モバイルの長い見出しの折返しとキャラの高さを微調整。
