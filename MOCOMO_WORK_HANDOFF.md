@@ -14,9 +14,9 @@ GitHub + Next.js/React + Supabase + Vercel。
 旧AppDeployには戻さない。
 
 ## Verified current state
-GitHub: kenkonitteki777-lab/MOCOMO。mainへの書き込み成功済み。Next.js初期コード投入済み。
+GitHub: kenkonitteki777-lab/MOCOMO。main、Next.jsの5タブ、ゲーム/記憶/絵本、個別キャラを実装済み。
 Supabase: MOCOMO project ref xoqawubwmuwvsrvokmxi, ap-northeast-1, ACTIVE_HEALTHY。9テーブルとRLS実装済み。
-Vercel: 未接続・未公開。公開URLはまだ存在しない。
+Vercel: GitHub連携で公開済み。https://mocomo-lake.vercel.app/ 。本番ゲスト体験を確認。Supabase環境変数/メール認証の本番動作は未検証。
 
 ## Five games
 1. もこもこジャンプ — 遊ぶ
@@ -26,7 +26,7 @@ Vercel: 未接続・未公開。公開URLはまだ存在しない。
 5. ほっとタイム — 休む
 
 ## Characters
-moco / sui / ren / toto / mogu / kira / pon / roo / muku / moyan。
+現在の表示: moco / sui / ren / toto / luna / mogu / pino / mini / kuu / nico。旧記憶の kira / pon / roo / muku / moyan は名前を保持して読み込む。
 Mocoは先生やヒーローではなく「そばにいる友達」。Moyanは悪役ではない。
 
 ## Character design
@@ -96,3 +96,5 @@ Vercel本番URLは https://mocomo-lake.vercel.app/ 。2026-10-07にユーザー�
 - 本番Supabase環境変数・メール認証/クラウド保存は引き続き未検証。Vercel公開後に実測した結果だけを完了とする。
 
 検証結果: unit 5件、browser全7シナリオ成功（表情切替テストのボタン名誤記を修正して再実行）。最終の食事/虹の保存整合修正後、該当browser3件・unit5件・型チェック・production buildも成功。日本語フォントで絵本と320pxの虹を目視確認、頭/足の欠けなし。公開先は上記Vercel GitHub連携を継続。
+
+公開実測: 実装commit 0c3301ff60476b4a485ecd14348d456ad8aca8ccのVercel status success。本番でレンの通常→わくわく、ジャンプ記憶→背景/仲間付き絵本、会話のきっかけ、ルナのひとやすみを操作・目視確認。
