@@ -12,8 +12,8 @@ function Part({ part, x, y, w, h }: { part: keyof typeof parts; x: number; y: nu
   return <svg x={x} y={y} width={w} height={h} viewBox={parts[part].join(' ')} preserveAspectRatio="none" overflow="hidden" aria-hidden="true"><image href={source} width="1024" height="1536" /></svg>;
 }
 
-export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze = 0, quiet = false }: {
-  feeling?: MocoFeeling; action?: MocoAction; gaze?: number; quiet?: boolean;
+export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze = 0, quiet = false, heldStar = false }: {
+  feeling?: MocoFeeling; action?: MocoAction; gaze?: number; quiet?: boolean; heldStar?: boolean;
 }) {
   const id = useId();
   const closed = feeling === 'joy';
@@ -50,6 +50,6 @@ export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze
       </g>
     </g>
     <g className="performer-hand performer-hand-left"><Part part="hand" x={84} y={283} w={48} h={53} /></g>
-    <g className="performer-hand performer-hand-right"><Part part="hand" x={269} y={283} w={48} h={53} /></g>
+    <g className="performer-hand performer-hand-right"><Part part="hand" x={269} y={283} w={48} h={53} />{heldStar && <svg className="performer-held-star" x="275" y="304" width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><path d="m32 8 7 15 17 3-12 12 3 17-15-8-15 8 3-17L8 26l17-3z" fill="#f3d78e" stroke="#c1a15b" strokeWidth="2" strokeLinejoin="round" /></svg>}</g>
   </svg>;
 }

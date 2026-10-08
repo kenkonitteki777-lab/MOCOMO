@@ -13,7 +13,7 @@ export const mocoFeelings = [
   ['playful', 'いたずら', 'こっそり、かくれて。ばあっ。'],
 ] as const;
 export type MocoFeeling = typeof mocoFeelings[number][0];
-export type MocoAction = 'rest' | 'look' | 'reach' | 'step' | 'share' | 'celebrate';
+export type MocoAction = 'rest' | 'look' | 'reach' | 'step' | 'share' | 'celebrate' | 'wave' | 'tickle' | 'breeze';
 export const firstStarScenes = [
   { feeling: 'calm', action: 'rest', gaze: 0, text: '雲のむこうで、なにかが、きらり。' },
   { feeling: 'curious', action: 'look', gaze: 1, text: 'あれ、なんだろう。そっと、近づく。' },

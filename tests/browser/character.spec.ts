@@ -3,13 +3,10 @@ import { test, expect } from '@playwright/test';
 test('Moco stays visible on small screens and responds to jumping and resting', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto('/');
-  await expect(page.getByRole('img', { name: 'もこも・にっこり' })).toBeVisible();
-  const loaded = await page.locator('.brand-mascot .moco').evaluate(async element => {
-    const url = getComputedStyle(element).backgroundImage.slice(5, -2);
-    const image = new Image();
-    image.src = url;
-    await image.decode();
-    return image.naturalWidth > 0 && image.naturalHeight > 0;
+  await expect(page.getByRole('img', { name: 'モコモ・ほっとする' })).toBeVisible();
+  const loaded = await page.evaluate(async () => {
+    const image = new Image(); image.src = '/characters/moco/performance/parts-v1.webp';
+    await image.decode(); return image.naturalWidth === 1024 && image.naturalHeight === 1536;
   });
   expect(loaded).toBe(true);
   for (const width of [320, 390, 760, 1440]) {
