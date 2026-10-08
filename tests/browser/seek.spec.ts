@@ -6,13 +6,17 @@ test('cloud discovery reactions serialize touches and save only actual finds', a
   const save = page.getByRole('button', { name: 'この時間を、記憶に' });
   await expect(save).toBeDisabled();
   await page.getByRole('button', { name: '雲1をさがす', exact: true }).dblclick();
-  await expect(page.getByRole('img', { name: 'もこも・くすぐったい' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'モコモ・こまった' })).toBeVisible();
   await expect(page.locator('#seek-caption')).toContainText('風がでてきた');
   await expect(save).toBeDisabled(); await expect(page.locator('.seek-pouch')).toHaveCount(0);
   await page.getByRole('button', { name: '雲2をさがす', exact: true }).dblclick();
   await expect(page.locator('.seek-pouch [role=img]')).toHaveCount(1);
-  await expect(page.getByRole('img', { name: 'もこも・にこにこ' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'モコモ・びっくり' })).toBeVisible();
   await expect(page.getByRole('img', { name: 'スイ・わくわく' })).toBeVisible();
+  await page.getByRole('button', { name: 'スイに、みせる', exact: true }).dblclick();
+  await expect(page.getByRole('img', { name: 'モコモ・うれしい', exact: true })).toBeVisible();
+  await expect(page.locator('#seek-caption')).toContainText('ふたりで見る');
+  await expect(page.locator('.seek-pouch [role=img]')).toHaveCount(1);
   await page.getByRole('button', { name: 'スイに、こんにちは' }).click();
   await expect(page.locator('#seek-caption')).toContainText('きみとさがす');
   expect(JSON.parse(await page.evaluate(() => localStorage.getItem('mocomo.guest.memories.v1') || '[]'))).toHaveLength(0);
@@ -48,13 +52,16 @@ test('cloud touch sizes, quiet mode, reduced motion and exiting mid-reveal remai
     expect(boxes[0].right).toBeLessThanOrEqual(boxes[1].x); expect(boxes[1].right).toBeLessThanOrEqual(boxes[2].x);
   }
   await page.getByRole('button', { name: '雲2をさがす' }).click();
-  await expect(page.getByRole('img', { name: 'もこも・きいている' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'モコモ・きになる' })).toBeVisible();
   await page.getByRole('button', { name: 'きょうは、ここまで' }).click();
   await page.getByRole('button', { name: /ひみつさがし/ }).click();
   await expect(page.locator('.seek-pouch')).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.getByRole('button', { name: '雲2をさがす' }).click();
   await expect(page.locator('.seek-pouch [role=img]')).toHaveCount(1);
+  await page.getByRole('button', { name: 'スイに、みせる', exact: true }).click();
+  await expect(page.getByRole('img', { name: 'モコモ・うれしい', exact: true })).toBeVisible();
+  expect(await page.locator('.performer-body').evaluate(e => getComputedStyle(e).animationName)).toBe('none');
   expect(await page.locator('.seek-moco').evaluate(e => getComputedStyle(e).animationName)).toBe('none');
   await page.getByRole('button', { name: /おうち FAMILY/ }).click(); await page.getByRole('button', { name: '私は保護者です' }).click();
   await page.getByRole('switch', { name: /動きをひかえめに/ }).click();

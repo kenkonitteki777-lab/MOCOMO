@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
-import Moco from './Moco';
+import PerformingMoco from './PerformingMoco';
 import Character from './Character';
 import Scene from './Scene';
 
 const items = ['星', 'はっぱ', 'ハート'] as const;
 type Find = typeof items[number];
-type Reaction = 'idle' | 'opening' | 'empty' | 'found' | 'hello';
+type Reaction = 'idle' | 'opening' | 'empty' | 'found' | 'hello' | 'sharing' | 'shared';
 
 function Treasure({ item }: { item: Find }) {
   return <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
@@ -31,6 +31,7 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
   const [target, setTarget] = useState(1);
   const [opened, setOpened] = useState<number[]>([]);
   const [found, setFound] = useState(false);
+  const [shared, setShared] = useState(false);
   const [discoveries, setDiscoveries] = useState<Find[]>([]);
   const [reaction, setReaction] = useState<Reaction>('idle');
   const [activeCloud, setActiveCloud] = useState<number | null>(null);
@@ -41,7 +42,12 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const locked = useRef(false);
   const saveLock = useRef(false);
-  const disabled = busy || saving || reaction === 'opening';
+  const room = useRef<HTMLElement>(null);
+  const disabled = busy || saving || reaction === 'opening' || reaction === 'sharing';
+  const feeling = reaction === 'opening' ? 'curious' : reaction === 'empty' ? 'confused' : reaction === 'sharing' || reaction === 'hello' ? 'proud' : shared ? 'joy' : found ? 'surprise' : 'calm';
+  const action = reaction === 'opening' ? 'step' : reaction === 'sharing' ? 'share' : reaction === 'shared' ? 'celebrate' : reaction === 'empty' ? 'look' : 'rest';
+  const gaze = reaction === 'sharing' || reaction === 'hello' ? 1 : activeCloud === null ? 0 : activeCloud - 1;
+  function showStage() { room.current?.querySelector('.seek-stage')?.scrollIntoView({ block: 'center', behavior: 'instant' }); }
 
   useEffect(() => {
     function clearReaction() {
@@ -59,6 +65,7 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
 
   function search(n: number) {
     if (disabled || locked.current || found || opened.includes(n)) return;
+    showStage();
     if (timer.current) clearTimeout(timer.current);
     locked.current = true;
     setActiveCloud(n);
@@ -70,7 +77,7 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
         setFound(true);
         setDiscoveries(v => [...v, item]);
         setReaction('found');
-        setCaption(item === '星' ? '星、みつけた！ スイの目も、きらきら。' : item === 'はっぱ' ? 'はっぱ、みつけた！ 風にのって、ここまで来たんだね。' : 'ハート、みつけた！ もこもとスイが、にっこり。');
+        setCaption(item === '星' ? '星、みつけた！ スイにも、見せようかな。' : item === 'はっぱ' ? 'はっぱ、みつけた！ 風にのって、ここまで来たんだね。' : 'ハート、みつけた！ スイにも、見せようかな。');
       } else {
         setReaction('empty');
         setCaption('ふわり、風がでてきたね。となりの雲ものぞいてみよう。');
@@ -85,7 +92,8 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
   function newSearch(nextItem = item) {
     if (disabled || locked.current) return;
     if (timer.current) clearTimeout(timer.current);
-    setItem(nextItem); setOpened([]); setFound(false); setActiveCloud(null); setReaction('idle');
+    setItem(nextItem); setOpened([]); setFound(false); setShared(false); setActiveCloud(null); setReaction('idle');
+    showStage();
     setTarget(Math.floor(Math.random() * 3));
     setCaption('スイも、そっと見ているよ。どの雲にしよう？');
   }
@@ -95,6 +103,18 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
     if (timer.current) clearTimeout(timer.current);
     setReaction('hello'); setCaption('スイが、こくん。「きみとさがすと、うれしいね。」');
     timer.current = setTimeout(() => { setReaction('idle'); timer.current = null; }, 1100);
+  }
+
+  function share() {
+    if (disabled || locked.current || !found || shared) return;
+    showStage();
+    if (timer.current) clearTimeout(timer.current);
+    locked.current = true; setShared(true); setReaction('sharing');
+    setCaption('「スイ、見て。きみと、いっしょに見たいな。」');
+    timer.current = setTimeout(() => {
+      setReaction('shared'); setCaption('スイが、こくん。ふたりで見ると、うれしいね。');
+      locked.current = false; timer.current = null;
+    }, quiet || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900);
   }
 
   async function save() {
@@ -109,12 +129,12 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
     } finally { saveLock.current = false; setSaving(false); }
   }
 
-  return <section className={`game-room rich-game green seek-room ${quiet ? 'seek-quiet' : ''}`} aria-labelledby="game-title">
-    <link rel="preload" as="image" href="/characters/moco/reactions-v1.webp" />
+  return <section ref={room} className={`game-room rich-game green seek-room ${quiet ? 'seek-quiet' : ''}`} aria-labelledby="game-title">
+    <link rel="preload" as="image" href="/characters/moco/performance/parts-v1.webp" />
     <button className="text-button" disabled={busy || saving} onClick={close}>← あそびをえらぶ</button>
     <p className="eyebrow">スイと、小さなひみつを みつける</p><h2 id="game-title">ひみつさがし</h2>
     {done ? <>
-      <Scene scene="seek" className="game-complete"><Moco mood="thanks" /><Character id="sui" mood="wonder" /></Scene>
+      <Scene scene="seek" className="game-complete"><PerformingMoco feeling="joy" quiet={quiet} /><Character id="sui" mood="wonder" /></Scene>
       <h3>きみが、みつけたひみつ。</h3><p>見つけたものが、雲の庭と記憶の絵本に残るよ。</p>
       <button disabled={!replayReady} onClick={() => { setDone(false); setDiscoveries([]); newSearch(); }}>もういちど、さがす</button>
       <button disabled={!replayReady} onClick={close}>別のあそびをえらぶ</button>
@@ -129,10 +149,11 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
             <span className="seek-cloud-label" aria-hidden="true">{opened.includes(n) ? found && n === target ? 'みつけた' : 'そよそよ' : 'ふわふわ'}</span>
           </button>)}
         </div>
-        <div className="seek-moco" data-reaction={reaction}><Moco mood={reaction === 'opening' ? 'listen' : reaction === 'found' ? 'laugh' : reaction === 'empty' ? 'tickle' : found ? 'wonder' : 'happy'} /></div>
+        <div className="seek-moco" data-reaction={reaction} data-cloud={activeCloud}><PerformingMoco feeling={feeling} action={action} gaze={gaze} quiet={quiet} /></div>
         <button className="seek-sui" data-reaction={reaction} aria-label="スイに、こんにちは" disabled={disabled} onClick={hello}><Character id="sui" mood={found || reaction === 'hello' ? 'wonder' : 'happy'} /><span aria-hidden="true">スイ</span></button>
       </Scene>
       <p id="seek-caption" className="game-caption" role="status">{caption}</p>
+      {found && <button className="seek-share" disabled={disabled || shared} onClick={share}>{shared ? 'いっしょに、見つけたね' : 'スイに、みせる'}</button>}
       <div className="choices seek-item-choices" role="group" aria-label="さがすもの">{items.map(v => <button key={v} aria-label={`${v}をさがす`} aria-pressed={item === v} disabled={disabled} onClick={() => newSearch(v)}><Treasure item={v} /><span>{v === '星' ? 'ほし' : v === 'ハート' ? 'はーと' : v}</span></button>)}</div>
       {found && <button className="seek-next" disabled={disabled} onClick={() => newSearch()}>もうひとつ、さがす</button>}
       {discoveries.length > 0 && <div className="seek-pouch" aria-label="見つけたもの"><span>きみの、たからもの</span><div>{discoveries.map((v, i) => <span key={i} role="img" aria-label={`見つけた${v}`}><Treasure item={v} /></span>)}</div></div>}
