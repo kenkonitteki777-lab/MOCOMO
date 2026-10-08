@@ -12,4 +12,4 @@ export const renStory:PictureStory={
   {title:'となりで、ぽん',image:'/stories/ren-wait/06-together.webp',alt:'夕焼けの低い雲から二人が並んで小さく跳ぶ。レンはモコモを見て、二人は笑う。',text:'次の雲の前で、レンがモコモを見た。\n「ここ、いけそう？」\n「うん。せーの」\nとなりで、ぽん。ふたりの雲が、同じようにふくらんだ。\n「まって」も言える。そう思うと、もうひとつ、跳んでみたくなった。'},
  ]
 };
-export const pictureStories:readonly PictureStory[]=[{...friendshipStory,description:'出会いと仲直りを描く、6ページの絵本',question:'モコモがスイを見たとき、何を思ったのかな。'},renStory,pinoStory];
+export const pictureStories:readonly PictureStory[]=[{...friendshipStory,game:'seek',playLabel:'スイとひみつをさがす',description:'出会いと仲直りを描く、6ページの絵本',question:'モコモがスイを見たとき、何を思ったのかな。'},renStory,pinoStory];

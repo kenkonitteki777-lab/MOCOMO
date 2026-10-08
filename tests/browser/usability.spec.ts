@@ -11,7 +11,7 @@ test('clear returns preserve the home entrance, character touch and friend disco
  await page.getByRole('button',{name:'スイと絵本へ',exact:true}).click();await expect(page.locator('.current-place')).toHaveText('絵本だな');
  await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBe(0);
  await page.locator('.route-toolbar').getByRole('button',{name:'モコモの世界にもどる',exact:true}).click();await expect(page.locator('#cloud-friend-sui')).toBeFocused();
- const jump=page.locator('#cloud-place-jump');await jump.scrollIntoViewIfNeeded();const scroll=await page.evaluate(()=>window.scrollY);await jump.click();await expect(page.getByRole('heading',{name:'もこもこジャンプ',exact:true})).toBeVisible();await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBe(0);
+ const jump=page.locator('#cloud-place-jump');await jump.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));const scroll=await page.evaluate(()=>window.scrollY);await jump.click();await expect(page.getByRole('heading',{name:'もこもこジャンプ',exact:true})).toBeVisible();await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBe(0);
  await page.locator('.route-toolbar').getByRole('button',{name:'モコモの世界にもどる',exact:true}).click();await expect(jump).toBeFocused();await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBe(scroll);
  await home.getByRole('button',{name:'絵本をえらぶ',exact:true}).click();await page.getByRole('button',{name:/モコモとスイのおはなし/}).click();await page.getByRole('button',{name:'絵本にひたる · 大きく読む'}).click();
  const reader=page.getByRole('dialog',{name:'絵本にひたるモード'});await reader.getByText('よみかた',{exact:true}).click();await reader.getByRole('button',{name:'モコモの世界にもどる',exact:true}).click();await expect(reader).toHaveCount(0);await expect(home).toBeVisible();
