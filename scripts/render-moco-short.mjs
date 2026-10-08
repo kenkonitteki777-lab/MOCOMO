@@ -1,0 +1,21 @@
+// Reproducible movie capture. Requires a running local dev server and ffmpeg.
+import { chromium } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+const runtimePath = process.env.MOCOMO_CHROMIUM_PATH;
+const browser = await chromium.launch({...(runtimePath ? {executablePath:runtimePath}:{}),args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const captureDir = '../browser-runtime/movie-capture';
+await mkdir(captureDir,{recursive:true});
+const context = await browser.newContext({viewport:{width:1280,height:720},recordVideo:{dir:captureDir,size:{width:1280,height:720}}});
+const page = await context.newPage();
+await page.goto('http://127.0.0.1:3000/shorts/first-star',{waitUntil:'networkidle'});
+await page.evaluate(async()=>{await document.fonts.ready;for(const src of ['/characters/moco/performance/parts-v1.webp','/world/scenes-v1.png','/characters/companions-wonder.png']){const im=new Image();im.src=src;await im.decode();}});
+await page.getByRole('button',{name:'アニメをみる',exact:true}).click();
+await page.addStyleTag({content:'.theater-standalone{padding:0;max-width:none;margin:0}.moco-short{width:1280px;height:720px;aspect-ratio:auto;border-radius:0!important;box-shadow:none}.theater-controls,.theater-note{position:fixed;top:110vh}nextjs-portal{display:none}'});
+await page.getByRole('button',{name:'もういちど、みる',exact:true}).waitFor({state:'attached',timeout:16000});
+await page.waitForTimeout(400);
+const movie = page.video();await context.close();const raw = await movie.path();await browser.close();
+await mkdir('public/movies',{recursive:true});
+const result=spawnSync('ffmpeg',['-y','-sseof','-12.4','-i',raw,'-t','12.4','-an','-vf','fps=24','-c:v','libx264','-preset','slow','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart','public/movies/first-star-v1.mp4'],{encoding:'utf8'});
+if(result.status!==0)throw new Error(result.stderr);
+console.log('public/movies/first-star-v1.mp4');

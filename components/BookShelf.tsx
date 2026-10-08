@@ -4,7 +4,8 @@ import type {Memory} from '../lib/memory';
 import {pictureStories} from '../lib/story-catalog';
 import StoryBook from './StoryBook';
 import FriendshipBook from './FriendshipBook';
-export default function BookShelf({events,children,onHome,onPlay,initialSelection=null,scope='guest'}:{events:Memory[];children?:ReactNode;onHome?:()=>void;onPlay?:(game:string)=>void;initialSelection?:string|null;scope?:string}){
+import MovieShelf from './MovieShelf';
+export default function BookShelf({events,children,onHome,onPlay,initialSelection=null,scope='guest',quiet=false}:{events:Memory[];children?:ReactNode;onHome?:()=>void;onPlay?:(game:string)=>void;initialSelection?:string|null;scope?:string;quiet?:boolean}){
  const [loaded,setLoaded]=useState(false);
  const [selected,setSelected]=useState<string|null>(initialSelection);const [positions,setPositions]=useState<Record<string,number>>({});
  const progressKey=`mocomo.reading.v1:${scope}`;
@@ -17,6 +18,7 @@ export default function BookShelf({events,children,onHome,onPlay,initialSelectio
    <button aria-pressed={!story} onClick={()=>setSelected(null)}><span>きみの記憶の絵本</span><strong>きみとの、おはなし</strong><small>いっしょに遊んだ時間から</small></button>
   </div>
   <p className="shelf-note">おはなしを選んで、親子でゆっくり。つづきの場所は、この端末で覚えているよ。</p>
+  <MovieShelf quiet={quiet}/>
   {story?loaded?<FriendshipBook key={story.id} story={story} initialIndex={positions[story.id]??0} onProgress={index=>progress(story.id,index)} onHome={onHome} onPlay={onPlay}/>:<p role="status">絵本をひらいています。</p>:<><StoryBook events={events}/>{children}</>}
  </>;
 }
