@@ -1,9 +1,13 @@
-type MocoMood = 'happy' | 'rest' | 'wonder';
+type MocoMood = 'happy' | 'rest' | 'wonder' | 'laugh' | 'listen' | 'tickle' | 'thanks';
 
 const expressions: Record<MocoMood, { label: string; position: string }> = {
   happy: { label: 'にっこり', position: '0%' },
   wonder: { label: 'わくわく', position: '50%' },
   rest: { label: 'ひとやすみ', position: '100%' },
+  laugh: { label: 'にこにこ', position: '0% 0%' },
+  listen: { label: 'きいている', position: '100% 0%' },
+  tickle: { label: 'くすぐったい', position: '0% 100%' },
+  thanks: { label: 'ありがとう', position: '100% 100%' },
 };
 const poses={crouch:'0% 0%',flight:'100% 0%',land:'0% 100%',wave:'100% 100%'};
 
@@ -15,6 +19,6 @@ export default function Moco({ mood = 'happy', className = '', pose, motion }: {
     aria-label={`もこも・${expression.label}`}
     data-mood={mood}
     data-pose={pose}
-    style={pose?{backgroundImage:'url(/characters/moco/motion-v1.webp)',backgroundSize:'200% 200%',backgroundPosition:poses[pose]}:{backgroundPosition:`${expression.position} center`}}
+    style={pose?{backgroundImage:'url(/characters/moco/motion-v1.webp)',backgroundSize:'200% 200%',backgroundPosition:poses[pose]}:['laugh','listen','tickle','thanks'].includes(mood)?{backgroundImage:'url(/characters/moco/reactions-v1.webp)',backgroundSize:'200% 200%',backgroundPosition:expression.position}:{backgroundPosition:`${expression.position} center`}}
   />;
 }

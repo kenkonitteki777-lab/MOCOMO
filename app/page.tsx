@@ -98,7 +98,7 @@ export default function Home() {
   {notice && <p role="status" className="notice">{notice}</p>}
   {tab!=='TODAY'&&<div className="route-toolbar" id="screen-location" tabIndex={-1} aria-label={`${screenName}の画面`}><button disabled={busy} onClick={()=>navigate('TODAY')}><span aria-hidden="true">⌂</span> モコモの世界にもどる</button><span className="current-place">{screenName}</span></div>}
   {tab==='TODAY' && <>
-   <CloudHome ready={ready} busy={busy} onHello={()=>void record('MEET',null)} onVisit={(destination,game,entry)=>{if(busy)return;homeEntry.current=entry??'';navigate(destination);if(game)setActive(game);}}/>
+   <CloudHome ready={ready} busy={busy} quiet={quiet} onHello={()=>void record('MEET',null)} onVisit={(destination,game,entry)=>{if(busy)return;homeEntry.current=entry??'';navigate(destination);if(game)setActive(game);}}/>
    <section className="memory-strip"><span>✧</span><div><h3>小さな時間が、世界の記憶に。</h3><p>{events.length?memoryText(events[events.length-1]):'はじめての記憶は、これから。'}</p></div><button onClick={()=>navigate('WORLD')}>みてみる →</button></section>
   </>}
   {tab==='WORLD' && <WorldGarden events={events} busy={busy} ready={ready} onPlay={game=>{navigate('PLAY');setActive(game);}} onBook={story=>{navigate('BOOK');setBookSelection(story??null);}} onHello={id=>void record('MEET',null,id)}/>}
