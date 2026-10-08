@@ -1,5 +1,5 @@
 // Original cloud-top arrangement, synthesized locally; no recorded vocals or samples.
-export function createMocomoMusic(initialScene=0,options:{theme?:'cloud'|'pino';quietScenes?:readonly number[]}={}){
+export function createMocomoMusic(initialScene=0,options:{theme?:'cloud'|'pino'|'home';quietScenes?:readonly number[]}={}){
  const context=new AudioContext();
  const master=context.createGain();master.gain.value=.12;
  const limiter=context.createDynamicsCompressor();limiter.threshold.value=-18;limiter.knee.value=18;limiter.ratio.value=4;
@@ -10,8 +10,11 @@ export function createMocomoMusic(initialScene=0,options:{theme?:'cloud'|'pino';
  const impulse=context.createBuffer(2,context.sampleRate*2.6,context.sampleRate);
  for(let ch=0;ch<2;ch++){const data=impulse.getChannelData(ch);for(let i=0;i<data.length;i++)data[i]=noise()*Math.pow(1-i/data.length,3);}
  room.buffer=impulse;
- const melody=options.theme==='pino'?[72,0,79,76,0,74,72,0,76,79,0,81,79,0,76,0,74,0,76,72,0,69,72,0,79,76,0,74,72,0,0,0]:[72,0,76,79,0,76,74,0,72,0,69,72,0,74,76,0,79,0,81,79,0,76,74,0,72,0,74,76,0,72,0,0];
- const chords=[[48,55,60,64],[53,60,64,69],[57,60,64,67],[55,62,65,69]];
+ const home=options.theme==='home';
+ // Original 64-beat theme: invitation, lift, a quiet answer, then return home.
+ const homeMelody=[72,0,74,76,79,0,76,74,72,0,69,72,74,0,0,0,76,0,79,81,79,0,76,74,72,0,74,76,72,0,0,0,69,0,72,74,76,0,74,72,67,0,69,72,74,0,0,0,76,0,79,81,84,0,81,79,76,0,74,72,72,0,0,0];
+ const melody=home?homeMelody:options.theme==='pino'?[72,0,79,76,0,74,72,0,76,79,0,81,79,0,76,0,74,0,76,72,0,69,72,0,79,76,0,74,72,0,0,0]:[72,0,76,79,0,76,74,0,72,0,69,72,0,74,76,0,79,0,81,79,0,76,74,0,72,0,74,76,0,72,0,0];
+ const chords=home?[[48,55,62,64],[53,60,67,69],[57,60,64,71],[55,62,67,69],[53,60,64,67],[48,55,62,64],[50,57,60,65],[55,60,62,67]]:[[48,55,60,64],[53,60,64,69],[57,60,64,67],[55,62,65,69]];
  let cursor=0;let next=context.currentTime+.12;let scene=initialScene;let stopped=false;
  function voice(midi:number,time:number,duration:number,gain:number,type:OscillatorType,attack:number,pan:number){
   if(!midi)return;const oscillator=context.createOscillator();const envelope=context.createGain();const filter=context.createBiquadFilter();const position=context.createStereoPanner();
@@ -30,14 +33,20 @@ export function createMocomoMusic(initialScene=0,options:{theme?:'cloud'|'pino';
    const quiet=(options.quietScenes??[2,3]).includes(scene);const note=melody[cursor%melody.length];
    // Felt-key melody; the pause after a phrase leaves room for reading aloud.
    if(!quiet||cursor%2===0)voice(note,next,2.8,quiet?.12:.23,'triangle',.025,-.12);
+   if(home){
+    // Round music-box overtone and slow flute answer, above a warm cloud pad.
+    if(note){voice(note+12,next,3.8,.032,'sine',.012,.32);if(cursor%4===0)voice(note-12,next+.18,3,.055,'sine',.38,-.28);}
+    if(cursor%4===2){const chord=chords[Math.floor(cursor/8)%chords.length];voice(chord[(Math.floor(cursor/4)%3)+1]+12,next,3,.06,'triangle',.06,.22);}
+    if(cursor%8===0)voice(chords[Math.floor(cursor/8)%chords.length][0]-12,next,8,.05,'sine',1.1,0);
+   }
    if(cursor%8===0){const chord=quiet?[57,60,64,67]:chords[Math.floor(cursor/8)%chords.length];for(const pitch of chord)voice(pitch,next,9,.035,'sine',1.7,.15);}
    // Sparse celesta-like star glints; no bright accent during the conflict.
    if(!quiet&&cursor%16===6)voice(note?note+12:84,next,3.6,.055,'sine',.04,.35);
-   next+=60/(options.theme==='pino'?64:60);cursor++;
+   next+=60/(home?68:options.theme==='pino'?64:60);cursor++;
  }}
  schedule();const timer=setInterval(schedule,200);
  // Some browsers create a suspended context even within a user gesture.
- if(context.state==='suspended')void context.resume();
+ if(context.state==='suspended')void context.resume().catch(()=>{});
  return {
   setVolume(value:number){master.gain.setTargetAtTime(Math.max(0,Math.min(1,value))*.24,context.currentTime,.2);},
   setScene(index:number){scene=index;},
