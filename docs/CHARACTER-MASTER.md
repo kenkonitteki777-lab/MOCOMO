@@ -30,3 +30,8 @@ Built-in image generation / identity-preserve。上記ブランドガイド中�
 `public/characters/companions-v2.png` / `companions-wonder.png` / `companions-rest.png`: 1254×1254 RGBA、3列×3段。左上から Sui / Ren / Toto / Luna / Mogu / Pino / Mini / Kuu / Nico。同じ造形・配置で通常、発見/喜び、休憩の顔を制作。サイズ差を保つため各段の表示窓は y=0/h=510、510/420、930/324。列幅418。頭や足を切り落とさない。
 
 `components/Character.tsx` が名前、旧IDの互換表示、表情、比率を共通管理。ゲーム中のジャンプ・発見・食事・虹の色変更でわくわく、休憩でひとやすみに切替。絵本も記憶に応じて同じ表情を使う。商用最終マスターの承認、横・背面や連続アニメーションは未完了。
+
+## Expression and performance audit — 2026-10-08
+現在は上記3表情に `reactions-v1.webp` のlaugh／listen／tickle／thanksが加わり、計7表情。`motion-v1.webp` にcrouch／flight／land／waveの4ポーズ。上記初期3表情だけという記述は履歴。全身画像方式のため表情とポーズの自由な合成は未対応。
+
+ユーザーが表情と汎用性の不足を根本課題と指摘。次は機能追加より演技可能なマスターと媒体展開を優先する。感情・動作・短編・商品向け平面表現の制作方針は `CHARACTER-PERFORMANCE.md`。新造形や動作基盤、動画はまだ完成していない。
