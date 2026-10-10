@@ -24,6 +24,6 @@ test('Moco stays visible on small screens and responds to jumping and resting', 
   await expect(page.getByRole('img', { name: 'もこも・わくわく' })).toBeVisible();
   await page.getByRole('button', { name: '← あそびをえらぶ' }).click();
   await page.getByRole('button', { name: /ほっとタイム/ }).click();
-  await expect(page.getByRole('img', { name: 'もこも・ひとやすみ' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'モコモ・ほっとする' })).toBeVisible();
   await page.screenshot({ path: 'test-results/moco-rest-mobile.png', fullPage: true });
 });

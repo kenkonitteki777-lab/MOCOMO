@@ -49,7 +49,7 @@ export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze
         {feeling === 'teary' && <g fill="#b4d9e5" opacity=".85"><path d="M124 238q-12 17 0 20q12-3 0-20" /><path d="M275 238q-12 17 0 20q12-3 0-20" /></g>}
       </g>
     </g>
-    <g className="performer-hand performer-hand-left"><Part part="hand" x={84} y={283} w={48} h={53} /></g>
-    <g className="performer-hand performer-hand-right"><Part part="hand" x={269} y={283} w={48} h={53} />{heldStar && <svg className="performer-held-star" x="275" y="304" width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><path d="m32 8 7 15 17 3-12 12 3 17-15-8-15 8 3-17L8 26l17-3z" fill="#f3d78e" stroke="#c1a15b" strokeWidth="2" strokeLinejoin="round" /></svg>}</g>
+    <g className="performer-hand performer-hand-left"><Part part="hand" x={105} y={306} w={48} h={53} /></g>
+    <g className="performer-hand performer-hand-right"><Part part="hand" x={247} y={306} w={48} h={53} />{heldStar && <svg className="performer-held-star" x="257" y="324" width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><path d="m32 8 7 15 17 3-12 12 3 17-15-8-15 8 3-17L8 26l17-3z" fill="#f3d78e" stroke="#c1a15b" strokeWidth="2" strokeLinejoin="round" /></svg>}</g>
   </svg>;
 }

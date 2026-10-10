@@ -28,7 +28,7 @@ export function storyFrom(events: Memory[]) {
     if(e.game_id==='kitchen')text=`${String(e.payload.food ?? 'おいしいごはん')}をお皿にのせて、${characterName(e.character_id)}と、いただきます。ひとくち食べたら、ほっぺがゆるんだ。`;
     if(e.game_id==='jump')text='雲をぽんっと押すと、体がふわり。いっしょに飛んだ先で、新しい空が見えた。';
     if(e.event_type==='DISCOVER')text=`雲の向こうに、${e.payload.item==='はっぱ'?'小さなはっぱ':e.payload.item==='ハート'?'やさしいハート':'きらりと光る星'}。見つけたひみつを、いっしょに大切にした。`;
-    if(e.event_type==='REST')text='言葉がなくても、いっしょにいられる。ふうっと息をはいて、雲の上でひと休み。';
+    if(e.event_type==='REST')text='言葉がなくても、いっしょにいられる。ルナと雲の上で、ひと休み。';
     return {id:e.id,text,type:e.event_type,scene,title:titles[scene],question:questions[scene],character:e.character_id ?? (e.game_id?gameCompanion[e.game_id]:'moco'),payload:e.payload};
   });
 }
