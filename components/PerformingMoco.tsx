@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { memo, useId } from 'react';
 import { mocoFeelings, type MocoAction, type MocoFeeling } from '../lib/moco-performance';
 
 const source = '/characters/moco/performance/parts-v1.webp';
@@ -12,8 +12,8 @@ function Part({ part, x, y, w, h }: { part: keyof typeof parts; x: number; y: nu
   return <svg x={x} y={y} width={w} height={h} viewBox={parts[part].join(' ')} preserveAspectRatio="none" overflow="hidden" aria-hidden="true"><image href={source} width="1024" height="1536" /></svg>;
 }
 
-export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze = 0, quiet = false, heldStar = false }: {
-  feeling?: MocoFeeling; action?: MocoAction; gaze?: number; quiet?: boolean; heldStar?: boolean;
+function PerformingMoco({ feeling = 'calm', action = 'rest', gaze = 0, quiet = false, heldStar = false, film = false }: {
+  feeling?: MocoFeeling; action?: MocoAction; gaze?: number; quiet?: boolean; heldStar?: boolean; film?: boolean;
 }) {
   const id = useId();
   const closed = feeling === 'joy';
@@ -28,9 +28,10 @@ export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze
           : squint ? 'M189 253h22'
             : feeling === 'confused' ? 'M188 252Q200 248 212 255'
               : 'M182 247Q200 265 218 247';
-  return <svg className={`performing-moco ${quiet ? 'performance-quiet' : ''}`} viewBox="0 0 400 420" role="img" aria-label={`モコモ・${mocoFeelings.find(v => v[0] === feeling)![1]}`} data-feeling={feeling} data-action={action}>
+  return <svg className={`performing-moco ${quiet ? 'performance-quiet' : ''} ${film ? 'film-rig' : ''}`} viewBox="0 0 400 420" role="img" aria-label={`モコモ・${mocoFeelings.find(v => v[0] === feeling)![1]}`} data-feeling={feeling} data-action={action}>
     <defs><radialGradient id={`${id}-eye`} cx="35%" cy="28%"><stop stopColor="#815247" /><stop offset=".5" stopColor="#4d241d" /><stop offset="1" stopColor="#25120e" /></radialGradient><linearGradient id={`${id}-mouth`} x2="0" y2="1"><stop stopColor="#5e271e" /><stop offset="1" stopColor="#b86956" /></linearGradient></defs>
-    <ellipse cx="200" cy="402" rx="97" ry="13" fill="#9eaf9130" />
+    <ellipse className="performer-shadow" cx="200" cy="402" rx="97" ry="13" fill="#9eaf9130" />
+    <g className="performer-rig">
     <g className="performer-body"><g className="performer-foot performer-foot-left"><Part part="foot" x={138} y={371} w={46} h={29} /></g><g className="performer-foot performer-foot-right"><Part part="foot" x={217} y={371} w={46} h={29} /></g><Part part="body" x={114} y={257} w={172} h={137} /></g>
     <g className="performer-head">
       <Part part="head" x={30} y={94} w={340} h={240} />
@@ -51,5 +52,8 @@ export default function PerformingMoco({ feeling = 'calm', action = 'rest', gaze
     </g>
     <g className="performer-hand performer-hand-left"><Part part="hand" x={105} y={306} w={48} h={53} /></g>
     <g className="performer-hand performer-hand-right"><Part part="hand" x={247} y={306} w={48} h={53} />{heldStar && <svg className="performer-held-star" x="257" y="324" width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><path d="m32 8 7 15 17 3-12 12 3 17-15-8-15 8 3-17L8 26l17-3z" fill="#f3d78e" stroke="#c1a15b" strokeWidth="2" strokeLinejoin="round" /></svg>}</g>
+    </g>
   </svg>;
 }
+
+export default memo(PerformingMoco);

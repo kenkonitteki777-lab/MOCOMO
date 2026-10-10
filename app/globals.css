@@ -144,3 +144,36 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .rest-room .rest-leave{display:block;margin:18px auto 0;padding:12px}
 .rest-room .game-caption{min-height:54px;margin:17px 0 8px}
 @media(max-width:480px){.rest-room .luna-rest-stage{height:245px}.rest-moments{gap:6px}.rest-moments button{font-size:11px;padding:12px 4px}.luna-rest-stage .luna-rest-friend{right:9%;bottom:24px;width:29%}}
+
+/* A common rig keeps the small hands attached through weight shifts and bounces. */
+.performer-rig{transform-origin:200px 390px;animation:performer-idle-weight 4.8s ease-in-out infinite}
+@keyframes performer-idle-weight{0%,100%{transform:scale(1)}50%{transform:scale(1.006,.995)}}
+.performing-moco[data-action=step] .performer-rig{animation:performer-weight-step .62s ease-in-out 1}
+.performing-moco[data-action=step] .performer-body,.performing-moco[data-action=celebrate] .performer-body{animation:none}
+@keyframes performer-weight-step{0%,100%{transform:none}35%{transform:translateY(-2px) rotate(-1deg)}70%{transform:translateY(-2px) rotate(1deg)}}
+.performing-moco[data-action=celebrate] .performer-rig{animation:performer-whole-joy 1.2s ease-in-out 2}
+@keyframes performer-whole-joy{0%,100%{transform:none}25%{transform:scale(1.01,.985)}48%{transform:translateY(-7px)}70%{transform:scale(1.01,.99)}}
+/* Film poses come from the playback clock, so pause freezes every body part. */
+.moco-short.continuous-film .short-moco{left:calc(var(--film-x)*1%);bottom:18%;width:36%;height:auto;transform:none!important;transition:none}
+.moco-short.continuous-film .short-moco .performing-moco{height:auto;aspect-ratio:400/420}
+.film-rig.performing-moco .performer-rig{animation:none!important;transform:translateY(calc(var(--film-bob)*1px)) rotate(calc(var(--film-tilt)*1deg))}
+.film-rig.performing-moco .performer-body{animation:none!important;transform:none!important}
+.film-rig.performing-moco .performer-head{animation:none!important;transition:none;transform:rotate(calc(var(--film-head)*1deg))}
+.film-rig.performing-moco .performer-tuft{animation:none!important;transition:none;transform:rotate(calc(var(--film-tuft)*1deg))}
+.film-rig.performing-moco .performer-face{transition:none;transform:translateX(calc(var(--film-gaze)*1px))}
+.film-rig.performing-moco .performer-hand-left{animation:none!important;transition:none;transform:rotate(calc(var(--film-armL)*1deg))}
+.film-rig.performing-moco .performer-hand-right{animation:none!important;transition:none;transform:rotate(calc(var(--film-armR)*1deg))}
+.film-rig.performing-moco .performer-foot-left{animation:none!important;transform:translateY(calc(var(--film-footL)*1px))}
+.film-rig.performing-moco .performer-foot-right{animation:none!important;transform:translateY(calc(var(--film-footR)*1px))}
+.film-rig.performing-moco .performer-blink{animation:none}
+.moco-short.continuous-film .short-sui{left:calc(var(--film-suiX)*1%);right:auto;bottom:18%;width:24%;height:46%;animation:none!important;transition:none;transform:rotate(calc(var(--film-suiTilt)*1deg))}
+.moco-short.continuous-film .short-star{left:calc(var(--film-starX)*1%);top:calc(var(--film-starY)*1%);width:5.5%;height:auto;aspect-ratio:1;opacity:var(--film-starOpacity);transition:none;transform:translate(-50%,-50%) scale(var(--film-starScale))}
+.moco-short.continuous-film .short-mystery-cloud{left:43%;top:32%;width:17%;height:14%}
+.moco-short.continuous-film .short-mystery-cloud span{transition:none;opacity:calc(1 - var(--film-cloud)*.92)}
+.moco-short.continuous-film .short-mystery-cloud span:first-child{transform:translateX(calc(var(--film-cloud)*-50%))}
+.moco-short.continuous-film .short-mystery-cloud span:last-child{transform:translateX(calc(var(--film-cloud)*50%))}
+.moco-short.continuous-film .short-sky{transform:scale(var(--film-camera));transition:none}
+.film-rig.performing-moco .performer-blink{transform:scaleY(var(--film-blink))}
+.film-rig.performing-moco .performer-shadow{transform-origin:200px 402px;transform:scaleX(var(--film-shadow))}
+
+.continuous-film{aspect-ratio:16/9}
