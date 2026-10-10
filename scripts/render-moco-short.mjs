@@ -7,14 +7,14 @@ const runtimePath = process.env.MOCOMO_CHROMIUM_PATH;
 const browser = await chromium.launch({...(runtimePath ? {executablePath:runtimePath}:{}),args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu']});
 const captureDir = '../browser-runtime/movie-capture';
 await mkdir(captureDir,{recursive:true});
-const framesDir = `${captureDir}/frames-v2`;
+const framesDir = `${captureDir}/frames-v3`;
 await rm(framesDir,{recursive:true,force:true});
 await mkdir(framesDir,{recursive:true});
 const context = await browser.newContext({viewport:{width:1280,height:720},deviceScaleFactor:1});
 const page = await context.newPage();
 await page.clock.install({time:new Date('2026-10-10T00:00:00Z')});
 await page.goto(`${process.env.MOCOMO_RENDER_URL || 'http://127.0.0.1:3000'}/shorts/first-star`,{waitUntil:'networkidle'});
-await page.evaluate(async()=>{await document.fonts.ready;for(const src of ['/characters/moco/performance/parts-v1.webp','/world/scenes-v1.png','/characters/companions-wonder.png']){const im=new Image();im.src=src;await im.decode();}});
+await page.evaluate(async()=>{await document.fonts.ready;for(const src of ['/characters/moco/performance/parts-v1.webp','/world/scenes-v1.png','/characters/sui/performance/parts-v1.webp']){const im=new Image();im.src=src;await im.decode();}});
 await page.clock.pauseAt(new Date('2026-10-10T00:00:10Z'));
 await page.getByRole('button',{name:'アニメをみる',exact:true}).click();
 await page.clock.runFor(10000);
@@ -46,6 +46,6 @@ for (let frame = 0; frame < Math.ceil((filmDuration + .4) * fps); frame++) {
 }
 await context.close();await browser.close();
 await mkdir('public/movies',{recursive:true});
-const result=spawnSync('ffmpeg',['-y','-framerate',String(fps),'-i',`${framesDir}/%04d.jpg`,'-an','-c:v','libx264','-preset','slow','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart','public/movies/first-star-v2.mp4'],{encoding:'utf8'});
+const result=spawnSync('ffmpeg',['-y','-framerate',String(fps),'-i',`${framesDir}/%04d.jpg`,'-an','-c:v','libx264','-preset','slow','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart','public/movies/first-star-v3.mp4'],{encoding:'utf8'});
 if(result.status!==0)throw new Error(result.stderr);
-console.log('public/movies/first-star-v2.mp4');
+console.log('public/movies/first-star-v3.mp4');

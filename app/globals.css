@@ -177,3 +177,20 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .film-rig.performing-moco .performer-shadow{transform-origin:200px 402px;transform:scaleX(var(--film-shadow))}
 
 .continuous-film{aspect-ratio:16/9}
+
+/* Sui has a separate puppet, with a curled tuft and light, quick footfalls. */
+.moco-short.continuous-film .short-sui{width:21.5%;height:auto;aspect-ratio:320/430;transform:none;bottom:18%}
+.performing-sui{display:block;width:100%;height:auto;overflow:visible}
+.sui-rig{transform-origin:160px 402px;transform:translateY(calc(var(--film-suiBob)*1px)) rotate(calc(var(--film-suiTilt)*1deg))}
+.sui-head{transform-origin:160px 295px;transform:rotate(calc(var(--film-suiHead)*1deg))}
+.sui-tuft{transform-origin:163px 125px;transform:rotate(calc(var(--film-suiTuft)*1deg))}
+.sui-face{transform:translateX(calc(var(--film-suiLook)*1px))}
+.sui-eye{transform:scaleY(var(--film-suiBlink))}
+.sui-hand-left{transform-origin:110px 327px;transform:rotate(calc(var(--film-suiArmL)*1deg))}
+.sui-hand-right{transform-origin:210px 327px;transform:rotate(calc(var(--film-suiArmR)*1deg))}
+.sui-foot-left{transform:translateY(calc(var(--film-suiFootL)*1px))}
+.sui-foot-right{transform:translateY(calc(var(--film-suiFootR)*1px))}
+.film-rig .performer-head-shape{transform-origin:200px 280px;transform:translateX(calc(var(--film-turn)*6px)) scaleX(calc(1 - var(--film-turn)*.035))}
+.film-rig.performing-moco .performer-face{transform:translateX(calc(var(--film-gaze)*1px + var(--film-turn)*12px))}
+.film-rig .performer-eye-far{transform-origin:138px 221px;transform:translateX(calc(var(--film-turn)*10px)) scaleX(calc(1 - var(--film-turn)*.18))}
+.film-rig .performer-eye-near{transform:translateX(calc(var(--film-turn)*-5px))}

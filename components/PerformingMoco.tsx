@@ -34,16 +34,16 @@ function PerformingMoco({ feeling = 'calm', action = 'rest', gaze = 0, quiet = f
     <g className="performer-rig">
     <g className="performer-body"><g className="performer-foot performer-foot-left"><Part part="foot" x={138} y={371} w={46} h={29} /></g><g className="performer-foot performer-foot-right"><Part part="foot" x={217} y={371} w={46} h={29} /></g><Part part="body" x={114} y={257} w={172} h={137} /></g>
     <g className="performer-head">
-      <Part part="head" x={30} y={94} w={340} h={240} />
+      <g className="performer-head-shape"><Part part="head" x={30} y={94} w={340} h={240} />
       <g className="performer-tuft"><Part part="tuft" x={132} y={38} w={137} h={88} /></g>
-      <g className="performer-face" transform={`translate(${looking} ${low ? 5 : 0})`}>
+      </g><g className="performer-face" transform={`translate(${looking} ${low ? 5 : 0})`}>
         {[138, 262].map((x, i) => <g key={x} className={closed || squint || low || feeling === 'playful' && i === 1 ? '' : 'performer-blink'} style={{ transformOrigin: `${x}px 222px` }}>
-          {closed ? <path d={`M${x - 13} 225q13-18 26 0`} fill="none" stroke="#4c261d" strokeWidth="7" strokeLinecap="round" />
+          <g className={i===0?'performer-eye-far':'performer-eye-near'}>{closed ? <path d={`M${x - 13} 225q13-18 26 0`} fill="none" stroke="#4c261d" strokeWidth="7" strokeLinecap="round" />
             : squint ? <path d={`M${x - 12} ${i ? 219 : 217}q12 7 24 1`} fill="none" stroke="#4c261d" strokeWidth="5" strokeLinecap="round" />
               : feeling === 'playful' && i === 1 ? <path d={`M${x - 12} 222q12 12 24 0`} fill="none" stroke="#4c261d" strokeWidth="6" strokeLinecap="round" />
                 : low ? <><ellipse cx={x} cy="224" rx="11" ry={feeling === 'sleepy' ? 5 : 9} fill={`url(#${id}-eye)`} /><path d={`M${x - 12} 217q12 8 24 0`} fill="none" stroke="#69412e" strokeWidth="3" strokeLinecap="round" /></>
                   : <><ellipse cx={x} cy="221" rx={surprised ? 13 : 12} ry={surprised ? 19 : 17} fill={`url(#${id}-eye)`} /><ellipse cx={x - 4} cy="213" rx="3" ry="4" fill="#fff9ee" /><circle cx={x + 4} cy="227" r="1.5" fill="#ead2bd" /></>}
-        </g>)}
+        </g></g>)}
         {feeling === 'confused' && <><path d="m125 193 19-5m106 0 18 5" stroke="#765647" strokeWidth="3" strokeLinecap="round" /></>}
         {feeling === 'proud' && <path d="M126 195q12-5 24-2" stroke="#765647" strokeWidth="3" fill="none" strokeLinecap="round" />}
         <path d={mouth} fill={['joy', 'surprise', 'sleepy'].includes(feeling) ? `url(#${id}-mouth)` : 'none'} stroke="#663025" strokeWidth={['joy', 'surprise', 'sleepy'].includes(feeling) ? 2 : 5} strokeLinecap="round" />
