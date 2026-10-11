@@ -15,6 +15,6 @@ test('emotional faces morph continuously at every scene boundary, and quiet mode
  assert.equal(new Set(Object.values(suiFaces).map(v=>JSON.stringify(v))).size,7);
 });
 test('camera returns to a wide composition, remains bounded and is disabled for reduced motion',()=>{
- for(let t=0;t<=24;t+=.03){const c=filmCamera(t);assert.ok(c.zoom>=1&&c.zoom<=1.16);assert.ok(Math.abs(c.pan)<=3);assert.deepEqual(filmCamera(t,true),{zoom:1,pan:0});}
+ for(let t=0;t<=24;t+=.03){const c=filmCamera(t);assert.ok(c.zoom>=1&&c.zoom<=1.34);assert.ok(Math.abs(c.pan)<=4.5);assert.deepEqual(filmCamera(t,true),{zoom:1,pan:0});}
  assert.deepEqual(filmCamera(24),{zoom:1,pan:0});
 });

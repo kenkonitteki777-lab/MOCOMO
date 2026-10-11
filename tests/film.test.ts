@@ -1,12 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { filmFrame, filmPose, filmDuration, filmStarPhase } from '../lib/film-motion';
+import { filmFrame, filmPose, filmDuration, filmStarPhase, filmCamera, filmCuts, filmFaces } from '../lib/film-motion';
 test('film has an ordered emotional arc and a stable final pose', () => {
  assert.equal(filmDuration, 24); assert.equal(filmFrame(-1), 0); assert.equal(filmFrame(NaN), 0);
  assert.equal(filmFrame(12), 5); assert.equal(filmFrame(24), 8);
  assert.deepEqual(filmPose(24), filmPose(50));
  assert.ok(filmPose(4.4).x - filmPose(2.4).x >= 12);
- assert.ok(filmPose(10).starX > filmPose(5).starX + 15);
+ assert.ok(filmPose(10).starX > filmPose(5).starX + 4);
 });
 test('continuous motion is finite, keeps transitions small and quiet poses stable within a scene', () => {
  let previous = filmPose(0);
@@ -36,4 +36,18 @@ test('turning reacts to the voice before handover, and contact relaxes after the
  assert.equal(filmPose(14.3,true).contact,0);
  // Sui's listening nod differs from Moco's response and settles after each sentence.
  assert.ok(filmPose(16.2).suiHead>filmPose(16.9).suiHead);
+});
+
+
+test('camera cuts reframe uninterrupted acting rather than resetting hands or expression',()=>{
+ for(const at of filmCuts.slice(1)) {
+  const a=filmCamera(at-.0001),b=filmCamera(at+.0001);
+  assert.ok(Math.abs(a.zoom-b.zoom)>.1);
+  const before=filmPose(at-.0001),after=filmPose(at+.0001);
+  for(const k of ['starX','starY','suiHandX','suiHandY','heldX','heldY'] as const)assert.ok(Math.abs(before[k]-after[k])<.01);
+ }
+ assert.ok(filmFaces(21.35).moco.closedLeft>filmFaces(21.35).sui.closedLeft);
+ assert.ok(filmPose(21.85).suiScaleY>1);
+ assert.ok(filmPose(23).starGlow>.6);
+ assert.deepEqual(filmPose(22,true),filmPose(23,true));
 });

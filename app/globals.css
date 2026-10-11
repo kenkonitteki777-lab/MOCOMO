@@ -228,3 +228,11 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .theater-timeline input{display:block;width:100%;height:44px;accent-color:#70856c;cursor:pointer;padding:0}
 .theater-timeline input:focus-visible{outline:2px solid #70856c;outline-offset:2px;border-radius:12px}
 @media(max-width:480px){.short-caption{font-size:12px;line-height:1.5;bottom:1%;padding:3px 7px}.theater-controls{gap:8px;padding-top:14px}}
+
+/* The last shot lets the shared star light their cloud, on the same clock. */
+.continuous-film .short-star-light{position:absolute;left:calc(var(--film-starX)*1%);top:calc(var(--film-starY)*1%);width:42%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;opacity:var(--film-starGlow);background:radial-gradient(circle,#fff3c650 0%,#fff3c61c 36%,#fff3c600 70%);mix-blend-mode:screen;z-index:1}
+.continuous-film .short-star{z-index:2}
+
+/* The discovered star sits in the gap between them, clear of Moco's forehead. */
+.moco-short.continuous-film .short-mystery-cloud{left:55%;top:38%;width:16%;height:14%}
+.continuous-film .short-breeze{position:absolute;left:61%;top:36%;width:18%;height:30%;pointer-events:none;opacity:var(--film-breeze)}

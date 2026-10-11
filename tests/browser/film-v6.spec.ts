@@ -29,7 +29,7 @@ test('seek, turn, soft contact and dedicated framing stay attached and freeze to
  await timeline.fill('18.6');await expect(page.locator('.moco-short')).toHaveAttribute('data-shot','together');await page.screenshot({path:'test-results/film-v6-together.png'});
  await timeline.fill('23.8');await page.getByRole('button',{name:'つづきを、みる',exact:true}).click();await expect(page.getByRole('button',{name:'もういちど、みる',exact:true})).toBeVisible();
  await timeline.fill('0');await timeline.focus();await timeline.press('ArrowRight');await expect(timeline).toHaveValue('0.1');
- await expect(page.locator('.movie-file-link')).toHaveAttribute('href','/movies/first-star-v6.mp4');
+ await expect(page.locator('.movie-file-link')).toHaveAttribute('href','/movies/first-star-v7.mp4');
  expect(errors).toEqual([]);
 });
 

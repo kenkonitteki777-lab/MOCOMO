@@ -33,21 +33,28 @@ export function filmFaces(seconds:number,reduced=false) {
  const t=Number.isFinite(seconds)?Math.max(0,Math.min(filmDuration,seconds)):0;
  const frame=filmFrame(t), previous=Math.max(0,frame-1);
  const progress=reduced?1:(t-filmScenes[frame].start)/.65;
+ const suiProgress=reduced?1:(t-filmScenes[frame].start-(frame===8?.28:0))/.78;
  return {
   moco:blendFace(mocoFaces[filmScenes[previous].feeling],mocoFaces[filmScenes[frame].feeling],progress),
-  sui:blendFace(suiFaces[suiFeeling(filmScenes[previous].start)],suiFaces[suiFeeling(filmScenes[frame].start)],progress),
+  sui:blendFace(suiFaces[suiFeeling(filmScenes[previous].start)],suiFaces[suiFeeling(filmScenes[frame].start)],suiProgress),
  };
 }
-// Dedicated discovery / contact / together framing shares one world-space stage.
+// Cuts change only the camera. The uninterrupted acting clock preserves the
+// location of both characters and the single star across every edit.
+export const filmCuts = [0,4.5,7,13.4,15.4,21] as const;
 export function filmShot(seconds:number) {
  const t=Number.isFinite(seconds)?Math.max(0,seconds):0;
- return t<4.5?'wide':t<7?'discovery':t<12?'search':t<16?'handover':t<21?'together':'wide';
+ return t<4.5?'wide':t<7?'discovery':t<12?'search':t<13.4?'arrival':t<15.4?'handover':t<21?'together':'wide';
 }
 export function filmCamera(seconds:number,reduced=false) {
  if(reduced)return {zoom:1,pan:0};
  const t=Number.isFinite(seconds)?Math.max(0,Math.min(24,seconds)):0;
- return {zoom:key(t,[[0,1],[4,1],[5.4,1.12],[6.6,1.12],[8.4,1],[12,1],[14.1,1.16],[14.8,1.16],[15.8,1.08],[18.6,1.12],[20,1.12],[22,1],[24,1]]),
-  pan:key(t,[[0,0],[4,0],[5.4,-1.5],[6.6,-1.5],[8.4,0],[12,0],[14.1,-1.8],[14.8,-1.8],[15.8,-2.5],[20,-2.5],[22,0],[24,0]])};
+ switch(filmShot(t)) {
+  case 'discovery': return {zoom:mix(1.18,1.2,(t-4.5)/2.5),pan:-3};
+  case 'handover': return {zoom:mix(1.3,1.34,(t-13.4)/.7),pan:-4.5};
+  case 'together': return {zoom:mix(1.12,1.16,(t-15.4)/3.2),pan:-3};
+  default: return {zoom:1,pan:0};
+ }
 }
 export function filmStarPhase(seconds:number) {
  return seconds<12?'free':seconds<12.4?'pickup':seconds<14.1?'sui':seconds<14.5?'shared':'moco';
@@ -57,13 +64,15 @@ function suiPose(t:number,reduced:boolean) {
  const walking=t>=10&&t<12.4&&!reduced;
  const stride=walking?Math.sin((t-10)/2.4*Math.PI*6):0;
  const suiX=key(t,[[0,74],[10,74],[12.4,61.5],[13,61.5],[14.1,56.5],[15,56.5],[17,61.5],[24,61.5]]);
- const suiBob=-Math.abs(stride)*2+key(t,[[0,0],[11,0],[12,5],[13.4,0],[24,0]]);
+ // Sui receives the joy with a tiny settled rise, after Moco's first hop.
+ const joyResponse=reduced?0:key(t,[[0,0],[21.35,0],[21.85,1],[22.45,0],[24,0]]);
+ const suiBob=-Math.abs(stride)*2-joyResponse*3+key(t,[[0,0],[11,0],[12,5],[13.4,0],[24,0]]);
  const suiTilt=stride*1.5+key(t,[[0,0],[10,0],[12,-4],[13.4,2],[15,0],[18,-3],[19.5,0],[24,0]]);
  // Sui listens before moving: a delayed nod rather than Moco's buoyant bounce.
  const listening=key(t,[[0,0],[15.6,0],[16.2,1],[16.9,0],[18,0],[18.6,1],[19.3,0],[24,0]]);
  const suiArmL=key(t,[[0,0],[11,0],[12,20],[13.4,58],[14,20],[15,0],[18,12],[21,0],[24,0]]);
  return {suiX,suiTilt,suiBob,suiArmL,
-  suiReach:0,suiScaleY:reduced?1:1-.018*Math.abs(stride),suiHandX:0,suiHandY:0,
+  suiReach:0,suiScaleY:reduced?1:1-.018*Math.abs(stride)+joyResponse*.012,suiHandX:0,suiHandY:0,
   suiArmR:walking?-stride*5:key(t,[[0,0],[12,-6],[15,0],[18,-12],[21,-8],[24,0]]),
   suiHead:5*listening+key(t,[[0,0],[7,-3],[10,-8],[12,-10],[13.4,3],[15,4],[18,-6],[21,0],[24,0]]),
   suiTurn:key(t,[[0,0],[10,-.1],[12,-.65],[14.1,-.85],[16,-.85],[18,-.65],[21,-.2],[24,0]]),
@@ -121,13 +130,13 @@ export function filmPose(seconds: number, reduced = false) {
  sui.suiHandX=sui.suiX+palm.x/320*21.5;
  sui.suiHandY=82-suiHeight+palm.y/430*suiHeight;
  const pickup=ease((t-12)/.4);
- const freeX=key(t,[[0,50],[7,50],[9.5,68],[24,68]]);
- const freeY=key(t,[[0,38],[4.5,38],[7,43],[9.5,70],[24,70]]);
+ const freeX=key(t,[[0,63],[7,63],[9.5,68],[24,68]]);
+ const freeY=key(t,[[0,45],[4.5,45],[7,45],[9.5,70],[24,70]]);
  const starX=t<14.5?freeX+(sui.suiHandX-freeX)*pickup:heldX;
  const starY=t<14.5?freeY+(sui.suiHandY-freeY)*pickup:heldY;
  const blink = reduced ? 1 : 1 - .93 * Math.max(0, ...[1.3,5.9,10.8,13.1,16.4,20,23.6].map(at => Math.max(0, 1 - Math.abs(t - at) / .09)));
  return {
-  contact,mocoContact, blink, shadow: scaleX + bob * .018, scaleX,scaleY,reach,heldX,heldY, x, bob, tilt, head, armR, armL: walking ? stride * 8 : key(t, [[0,0],[9.5,12],[12,0],[18,16],[21,8],[24,8]]),
+  breeze:reduced?0:key(t,[[0,0],[7,0],[7.65,.7],[8.5,.7],[9.5,0],[24,0]]), starGlow:reduced?(t>=21?.7:0):ease((t-21.15)/1.4)*.7, contact,mocoContact, blink, shadow: scaleX + bob * .018, scaleX,scaleY,reach,heldX,heldY, x, bob, tilt, head, armR, armL: walking ? stride * 8 : key(t, [[0,0],[9.5,12],[12,0],[18,16],[21,8],[24,8]]),
   footL: Math.max(0, stride) * -5 - (walking ? bob : 0), footR: Math.max(0, -stride) * -5 - (walking ? bob : 0),
   tuft: -head * .55 + (!reduced ? Math.sin(t * 2.2 - .35) * 1.5 : 0),
   gaze: key(t, [[0,0],[2,5],[7,7],[9.5,2],[12,7],[18,5],[21,0],[24,0]]),

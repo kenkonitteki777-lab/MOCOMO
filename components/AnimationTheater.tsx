@@ -42,6 +42,6 @@ export default function AnimationTheater({ standalone = false, quiet = false }: 
       {standalone && <a href="/">モコモの世界にもどる</a>}
     </div>
     {!feelingView && <label className="theater-timeline"><span>すきなところから、みる <small>{Math.floor(seconds)} / {firstStarDuration}秒</small></span><input type="range" min="0" max={firstStarDuration} step="0.1" value={seconds} aria-label="おはなしの再生位置" aria-valuetext={`${Math.floor(seconds)}秒、${filmScenes[filmFrame(seconds)].text}`} onChange={e=>seek(Number(e.target.value))}/></label>}
-    {feelingView ? <div className="theater-feelings"><p role="status">{mocoFeelings.find(v => v[0] === (feeling ?? 'calm'))![2]}</p><div role="group" aria-label="モコモのきもち">{mocoFeelings.map(([id, label]) => <button key={id} aria-pressed={(feeling ?? 'calm') === id} onClick={() => setFeeling(id)}>{label}</button>)}</div></div> : <><p className="theater-note">24秒の、小さなおはなし。音なしでも、ゆっくり楽しめるよ。</p><a className="movie-file-link" href="/movies/first-star-v6.mp4">動画でも、みる</a></>}
+    {feelingView ? <div className="theater-feelings"><p role="status">{mocoFeelings.find(v => v[0] === (feeling ?? 'calm'))![2]}</p><div role="group" aria-label="モコモのきもち">{mocoFeelings.map(([id, label]) => <button key={id} aria-pressed={(feeling ?? 'calm') === id} onClick={() => setFeeling(id)}>{label}</button>)}</div></div> : <><p className="theater-note">24秒の、小さなおはなし。音なしでも、ゆっくり楽しめるよ。</p><a className="movie-file-link" href="/movies/first-star-v7.mp4">動画でも、みる</a></>}
   </section>;
 }
