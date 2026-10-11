@@ -26,3 +26,5 @@
 
 ## 公開
 既存GitHub main→Vercel ozma1/mocomoを継続。Vercel管理APIはteam指定のget_project/list_deploymentsで403。CLIはこの環境にない。リリース前の指定commitのVercel successと公開URLのHTTP200は確認済み。v6の公開結果は実測後に追記する。
+
+本番実測: 実装commit `36ee088b4aaa064e8491db07820ba166aee3c6e9` のVercel success（ozma1/mocomo）を確認。公開URL https://mocomo-lake.vercel.app/shorts/first-star でv6リンクとスライダー、14.3秒の共同保持を直接操作。390pxで手同士0.0171px／手と星0.0298px未満、横はみ出しなし。停止の姿勢固定、12.5秒の両者の振り向き、位置選択→続き→終了→もう一度の再始動を確認。公開MP4は24.416667秒／1280×720／readyState4。ページJavaScriptエラー0。公開画面を日本語フォントで目視。管理APIの403は残るがGitHub連携による公開と公開アプリ操作は成功。認証／家庭別保存、実機フレームレート、親子評価を検証したものではない。

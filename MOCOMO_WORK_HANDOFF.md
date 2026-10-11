@@ -261,3 +261,5 @@ CREATEは記憶ボタンのみ、実際のcolors/color/sky/companionを既存保
 指定main `32e2fdda05dd755166737de50ea9627617081050` と最新コード・PROGRESS・造形仕様を確認。公開短編HTTP200、指定commitのVercel status successを確認。既存プロジェクトはozma1/mocomo。管理APIのteam指定には403、CLIは利用不可なのでGitHub連携で既存公開先へ反映し公開URLを検証する。
 
 v6は正面部品による浅い振り向き、支点を保った手の接触変形、スイの遅れてうなずく反応、共同保持の専用構図、停止して場面を選ぶスライダー。承認済み画像素材は維持。詳細と残りは docs/FILM-V6.md。独立したカットと横／後ろ専用造形を完成と扱わない。unit12件、production buildと型チェック成功。production browser6件全成功、先行browserの受け渡し／連続演技／スイ／軽減の4件も成功。最初の撮影時間切れとhydration前の入力による新テスト失敗は同書に記載。全既存browserの一括成功ではない。v6は固定時計586フレーム、H.264／24fps／1280×720／24.416667秒／902473bytes、Git blob da2722c4bbe25bee19b918df7724eafebf89b516。振り向き・共同保持・喜びの実フレームを日本語フォントで目視。認証／家庭別保存と実機／親子評価は今回に含めない。
+
+本番実測: 実装commit `36ee088b4aaa064e8491db07820ba166aee3c6e9` のVercel success（ozma1/mocomo）を確認。公開URL https://mocomo-lake.vercel.app/shorts/first-star でv6リンクとスライダー、14.3秒の共同保持を直接操作。390pxで手同士0.0171px／手と星0.0298px未満、横はみ出しなし。停止の姿勢固定、12.5秒の両者の振り向き、位置選択→続き→終了→もう一度の再始動を確認。公開MP4は24.416667秒／1280×720／readyState4。ページJavaScriptエラー0。公開画面を日本語フォントで目視。管理APIの403は残るがGitHub連携による公開と公開アプリ操作は成功。認証／家庭別保存、実機フレームレート、親子評価を検証したものではない。
