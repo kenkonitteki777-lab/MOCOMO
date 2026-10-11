@@ -19,6 +19,6 @@ export default function Moco({ mood = 'happy', className = '', pose, motion }: {
     aria-label={`もこも・${expression.label}`}
     data-mood={mood}
     data-pose={pose}
-    style={pose?{backgroundImage:'url(/characters/moco/expressions-v2.webp)',backgroundSize:'300% 100%',backgroundPosition:`${poses[pose]} center`}:['laugh','listen','tickle','thanks'].includes(mood)?{backgroundImage:'url(/characters/moco/reactions-v2.webp)',backgroundSize:'200% 200%',backgroundPosition:expression.position}:{backgroundPosition:`${expression.position} center`}}
+    style={mood==='thanks'?{backgroundImage:'url(/characters/moco/hero-v3.webp)',backgroundSize:'100% 100%',backgroundPosition:'center'}:pose?{backgroundImage:'url(/characters/moco/expressions-v3.webp)',backgroundSize:'300% 100%',backgroundPosition:`${poses[pose]} center`}:['laugh','listen','tickle','thanks'].includes(mood)?{backgroundImage:'url(/characters/moco/reactions-v3.webp)',backgroundSize:'200% 200%',backgroundPosition:expression.position}:{backgroundPosition:`${expression.position} center`}}
   />;
 }
