@@ -25,3 +25,15 @@ test('palms support the same star during the shared hold, with continuous handov
  for(const at of [12,12.4,13.4,14.1,14.5,16]){const a=filmPose(at-.00001),b=filmPose(at+.00001);assert.ok(Math.hypot(a.starX-b.starX,a.starY-b.starY)<.01);}
  for(let t=0;t<=24;t+=.03){const p=filmPose(t);assert.ok(p.scaleY>=.95&&p.scaleY<=1.03);assert.ok(p.suiReach<120);assert.equal(filmPose(t,true).scaleY,1);}
 });
+
+test('turning reacts to the voice before handover, and contact relaxes after the load',()=>{
+ assert.ok(filmPose(11.8).turn<0);
+ assert.ok(filmPose(12.5).turn>.5);
+ assert.ok(filmPose(14.3).suiTurn<-.5);
+ assert.ok(filmPose(14.3).contact>.9);
+ assert.ok(filmPose(14.3).mocoContact>.9);
+ assert.equal(filmPose(16).contact,0);assert.equal(filmPose(16).mocoContact,0);
+ assert.equal(filmPose(14.3,true).contact,0);
+ // Sui's listening nod differs from Moco's response and settles after each sentence.
+ assert.ok(filmPose(16.2).suiHead>filmPose(16.9).suiHead);
+});

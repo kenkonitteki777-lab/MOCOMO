@@ -1,13 +1,13 @@
 import type { CSSProperties } from 'react';
 import PerformingMoco from './PerformingMoco';
 import PerformingSui from './PerformingSui';
-import { filmCamera, filmFaces, filmPose, filmStarPhase, suiFeeling } from '../lib/film-motion';
+import { filmShot, filmCamera, filmFaces, filmPose, filmStarPhase, suiFeeling } from '../lib/film-motion';
 import { firstStarFrame, firstStarScenes, type MocoFeeling } from '../lib/moco-performance';
 export default function MocoShort({ seconds, quiet = false, still = false, feeling }: { seconds: number; quiet?: boolean; still?: boolean; feeling?: MocoFeeling }) {
  const frame = firstStarFrame(seconds), scene = firstStarScenes[frame], pose = filmPose(seconds, quiet);
  const faces=filmFaces(seconds,quiet), camera=filmCamera(seconds,quiet);
  const style = Object.fromEntries(Object.entries({...pose,shotZoom:camera.zoom,shotPan:camera.pan}).map(([key, value]) => [`--film-${key}`, value])) as CSSProperties;
- return <div className={`moco-short ${quiet || still ? 'short-quiet' : ''} ${feeling ? 'short-feeling-view' : 'continuous-film'}`} data-frame={frame} style={style}>
+ return <div className={`moco-short ${quiet || still ? 'short-quiet' : ''} ${feeling ? 'short-feeling-view' : 'continuous-film'}`} data-shot={feeling ? "portrait" : filmShot(seconds)} data-frame={frame} style={style}>
   <div className="short-stage">
   <div className="short-sky" aria-hidden="true"/>
   <div className="short-atmosphere" aria-hidden="true"/>
@@ -19,6 +19,6 @@ export default function MocoShort({ seconds, quiet = false, still = false, feeli
   </>}
   </div>
   <div className="short-title" aria-hidden="true">モコモ<span>ほし、みつけた。</span></div>
-  <p className="short-caption" aria-live="polite">{feeling ? '' : scene.text}</p>
+  <p className="short-caption" >{feeling ? '' : scene.text}</p>
  </div>;
 }

@@ -31,7 +31,7 @@ function PerformingMoco({ feeling = 'calm', action = 'rest', gaze = 0, quiet = f
       </g>
     </g>
     <g className="performer-hand performer-hand-left"><Part part="hand" x={105} y={306} w={48} h={53} /></g>
-    <g className="performer-hand performer-hand-right">{reach>0&&<Part part="hand" x={247} y={306} w={reach+48} h={53}/>}<g className="performer-palm-right" transform={`translate(${reach} 0)`}><Part part="hand" x={247} y={306} w={48} h={53} />{heldStar && <svg className="performer-held-star" x="257" y="324" width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><path d="m32 8 7 15 17 3-12 12 3 17-15-8-15 8 3-17L8 26l17-3z" fill="#f3d78e" stroke="#c1a15b" strokeWidth="2" strokeLinejoin="round" /></svg>}</g></g>
+    <g className="performer-hand performer-hand-right">{reach>0&&<Part part="hand" x={247} y={306} w={reach+48} h={53}/>}<g className="performer-palm-right" transform={`translate(${reach} 0)`}><g className="performer-palm-skin"><Part part="hand" x={247} y={306} w={48} h={53} /></g>{heldStar && <svg className="performer-held-star" x="257" y="324" width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><path d="m32 8 7 15 17 3-12 12 3 17-15-8-15 8 3-17L8 26l17-3z" fill="#f3d78e" stroke="#c1a15b" strokeWidth="2" strokeLinejoin="round" /></svg>}</g></g>
     </g>
   </svg>;
 }

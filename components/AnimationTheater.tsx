@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import MocoShort from './MocoShort';
+import { filmFrame, filmScenes } from '../lib/film-motion';
 import { firstStarDuration, mocoFeelings, type MocoFeeling } from '../lib/moco-performance';
 
 export default function AnimationTheater({ standalone = false, quiet = false }: { standalone?: boolean; quiet?: boolean }) {
@@ -27,6 +28,10 @@ export default function AnimationTheater({ standalone = false, quiet = false }: 
   }, [playing, run]);
   function play() { setFeelingView(false); setFeeling(undefined); if (clock.current >= firstStarDuration) { clock.current = 0; setSeconds(0); } setPlaying(true); }
   function pause() { if (playing) setSeconds(clock.current); setPlaying(false); }
+  function seek(value:number) {
+    const next=Math.max(0,Math.min(firstStarDuration,value));
+    setPlaying(false); clock.current=next; setSeconds(next); setFeelingView(false); setFeeling(undefined);
+  }
   function replay() { setRun(v => v + 1); clock.current = 0; setSeconds(0); setFeelingView(false); setFeeling(undefined); setPlaying(true); }
   return <section className={`animation-theater ${standalone ? 'theater-standalone' : ''}`} aria-label="モコモのちいさなアニメ">
     <MocoShort seconds={seconds} quiet={quiet || reduce} still={!playing} feeling={feelingView ? feeling ?? 'calm' : undefined} />
@@ -36,6 +41,7 @@ export default function AnimationTheater({ standalone = false, quiet = false }: 
       <button aria-pressed={feelingView} onClick={() => { pause(); setFeelingView(v => !v); }}>モコモのきもちで、あそぶ</button>
       {standalone && <a href="/">モコモの世界にもどる</a>}
     </div>
-    {feelingView ? <div className="theater-feelings"><p role="status">{mocoFeelings.find(v => v[0] === (feeling ?? 'calm'))![2]}</p><div role="group" aria-label="モコモのきもち">{mocoFeelings.map(([id, label]) => <button key={id} aria-pressed={(feeling ?? 'calm') === id} onClick={() => setFeeling(id)}>{label}</button>)}</div></div> : <><p className="theater-note">24秒の、小さなおはなし。音なしでも、ゆっくり楽しめるよ。</p><a className="movie-file-link" href="/movies/first-star-v5.mp4">動画でも、みる</a></>}
+    {!feelingView && <label className="theater-timeline"><span>すきなところから、みる <small>{Math.floor(seconds)} / {firstStarDuration}秒</small></span><input type="range" min="0" max={firstStarDuration} step="0.1" value={seconds} aria-label="おはなしの再生位置" aria-valuetext={`${Math.floor(seconds)}秒、${filmScenes[filmFrame(seconds)].text}`} onChange={e=>seek(Number(e.target.value))}/></label>}
+    {feelingView ? <div className="theater-feelings"><p role="status">{mocoFeelings.find(v => v[0] === (feeling ?? 'calm'))![2]}</p><div role="group" aria-label="モコモのきもち">{mocoFeelings.map(([id, label]) => <button key={id} aria-pressed={(feeling ?? 'calm') === id} onClick={() => setFeeling(id)}>{label}</button>)}</div></div> : <><p className="theater-note">24秒の、小さなおはなし。音なしでも、ゆっくり楽しめるよ。</p><a className="movie-file-link" href="/movies/first-star-v6.mp4">動画でも、みる</a></>}
   </section>;
 }

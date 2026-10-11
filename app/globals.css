@@ -211,3 +211,20 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 
 .film-rig.performing-moco .performer-rig{transform:translateY(calc(var(--film-bob)*1px)) rotate(calc(var(--film-tilt)*1deg)) scale(var(--film-scaleX),var(--film-scaleY))}
 .continuous-film .sui-rig{transform:translateY(calc(var(--film-suiBob)*1px)) rotate(calc(var(--film-suiTilt)*1deg)) scale(calc(1 / var(--film-suiScaleY)),var(--film-suiScaleY))}
+
+/* v6: modest three-quarter turns, soft palms and Sui's listening response.
+   Palm deformation uses the contact point as its origin; arms stay in the common rig. */
+.continuous-film .sui-head-shape{transform-origin:160px 280px;transform:translateX(calc(var(--film-suiTurn)*6px)) scaleX(calc(1 - var(--film-suiTurn)*-.035))}
+.continuous-film .sui-face{transform:translateX(calc(var(--film-suiLook)*1px + var(--film-suiTurn)*12px))}
+.continuous-film .sui-eye-far{transform-origin:211px 228px;transform:translateX(calc(var(--film-suiTurn)*10px)) scaleX(calc(1 + var(--film-suiTurn)*.18))}
+.continuous-film .sui-eye-near{transform:translateX(calc(var(--film-suiTurn)*-5px))}
+.continuous-film .performer-palm-skin{transform-origin:273px 340px;transform:scale(calc(1 + var(--film-mocoContact)*.06),calc(1 - var(--film-mocoContact)*.055))}
+.continuous-film .sui-palm-skin{transform-origin:94px 327px;transform:scale(calc(1 + var(--film-contact)*.065),calc(1 - var(--film-contact)*.06))}
+.continuous-film .short-moco .face-blush{transform-box:fill-box;transform-origin:center;transform:scaleY(calc(1 - var(--film-mocoContact)*.08))}
+.continuous-film .short-sui .face-blush{transform-box:fill-box;transform-origin:center;transform:scaleY(calc(1 - var(--film-contact)*.08))}
+.theater-timeline{display:block;max-width:580px;margin:8px auto 0;padding:0 8px;color:var(--muted);font-size:12px}
+.theater-timeline>span{display:flex;justify-content:space-between;gap:12px}
+.theater-timeline small{white-space:nowrap;font-variant-numeric:tabular-nums}
+.theater-timeline input{display:block;width:100%;height:44px;accent-color:#70856c;cursor:pointer;padding:0}
+.theater-timeline input:focus-visible{outline:2px solid #70856c;outline-offset:2px;border-radius:12px}
+@media(max-width:480px){.short-caption{font-size:12px;line-height:1.5;bottom:1%;padding:3px 7px}.theater-controls{gap:8px;padding-top:14px}}

@@ -17,10 +17,10 @@ function PerformingSui({feeling='calm',quiet=false,reach=0,facePose}:{feeling?:S
   <ellipse className="sui-shadow" cx="160" cy="419" rx="77" ry="9" fill="#79919c24"/>
   <g className="sui-rig">
    <g className="sui-body"><g className="sui-foot-left"><Part part="foot" x={105} y={393} w={38} h={25}/></g><g className="sui-foot-right"><Part part="foot" x={179} y={393} w={38} h={25}/></g><Part part="body" x={95} y={278} w={130} h={128}/></g>
-   <g className="sui-head"><Part part="head" x={40} y={100} w={240} h={220}/><g className="sui-tuft"><Part part="tuft" x={115} y={16} w={109} h={125}/></g>
+   <g className="sui-head"><g className="sui-head-shape"><Part part="head" x={40} y={100} w={240} h={220}/><g className="sui-tuft"><Part part="tuft" x={115} y={16} w={109} h={125}/></g></g>
     <g className="sui-face"><CharacterFace pose={facePose ?? suiFaces[feeling]} character="sui"/></g>
    </g>
-   <g className="sui-hand-left">{reach>0&&<Part part="hand" x={73-reach} y={306} w={reach+43} h={49}/>}<g className="sui-palm-left" transform={`translate(${-reach} 0)`}><Part part="hand" x={73} y={306} w={43} h={49}/></g></g>
+   <g className="sui-hand-left">{reach>0&&<Part part="hand" x={73-reach} y={306} w={reach+43} h={49}/>}<g className="sui-palm-left" transform={`translate(${-reach} 0)`}><g className="sui-palm-skin"><Part part="hand" x={73} y={306} w={43} h={49}/></g></g></g>
    <g className="sui-hand-right"><Part part="hand" x={204} y={306} w={43} h={49}/></g>
   </g>
  </svg>;
