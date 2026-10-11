@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+import {firstStarFrame} from '../../lib/moco-performance';
 
 test('independent facial parts expose twelve feelings and a controlled short story without memories',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.clock.install({time:new Date('2026-10-10T00:00:00Z')});await page.goto('/shorts/first-star');await page.clock.pauseAt(new Date('2026-10-10T01:00:00Z'));
@@ -12,7 +13,10 @@ test('independent facial parts expose twelve feelings and a controlled short sto
  await page.getByRole('button',{name:'いったん、とめる',exact:true}).click();const paused=await page.locator('.moco-short').getAttribute('data-frame');
  await expect(page.getByRole('button',{name:'つづきを、みる',exact:true})).toBeVisible();
  await page.clock.runFor(2300);await expect(page.locator('.moco-short')).toHaveAttribute('data-frame',paused!);
- await page.getByRole('button',{name:'つづきを、みる',exact:true}).click();await page.clock.runFor(22000);await expect(page.locator('.moco-short')).toHaveAttribute('data-frame','8');await expect(page.getByRole('button',{name:'もういちど、みる',exact:true})).toBeVisible({timeout:4000});
+ await page.getByRole('button',{name:'つづきを、みる',exact:true}).click();
+ // Observe intermediate renders instead of accumulating the entire film in one React batch.
+ for(let step=1;step<=11;step++){await page.clock.runFor(2000);await expect(page.locator('.moco-short')).toHaveAttribute('data-frame',String(firstStarFrame(2.1+step*2)));}
+ await expect(page.getByRole('button',{name:'もういちど、みる',exact:true})).toBeVisible({timeout:4000});
  expect(await page.evaluate(()=>localStorage.getItem('mocomo.guest.memories.v1'))).toBe(null);expect(errors).toEqual([]);
  for(const width of [320,390,760,1440]){await page.setViewportSize({width,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}
 });

@@ -19,12 +19,9 @@ test('continuous motion is finite, keeps transitions small and quiet poses stabl
  assert.deepEqual(filmPose(16,true),filmPose(17,true));
 });
 
-test('Sui holds the star before delivery, with continuous release and catch',()=>{
- assert.equal(filmStarPhase(12.8),'sui');assert.equal(filmStarPhase(14),'flight');assert.equal(filmStarPhase(15),'moco');
- const held=filmPose(12.8);assert.equal(held.starX,held.suiHandX);assert.equal(held.starY,held.suiHandY);
- for(const at of [12,12.4,13.4,15]){
-  const before=filmPose(at-.00001),after=filmPose(at+.00001);
-  assert.ok(Math.hypot(after.starX-before.starX,after.starY-before.starY)<.01);
- }
- assert.ok(filmPose(14).starX<filmPose(13.4).starX);assert.ok(filmPose(15).starX<filmPose(14).starX);
+test('palms support the same star during the shared hold, with continuous handover',()=>{
+ assert.equal(filmStarPhase(12.8),'sui');assert.equal(filmStarPhase(14.3),'shared');assert.equal(filmStarPhase(15),'moco');
+ for(let t=14.1;t<14.5;t+=.02){const p=filmPose(t);assert.ok(Math.hypot(p.suiHandX-p.heldX,p.suiHandY-p.heldY)<.00001);assert.equal(p.starX,p.suiHandX);}
+ for(const at of [12,12.4,13.4,14.1,14.5,16]){const a=filmPose(at-.00001),b=filmPose(at+.00001);assert.ok(Math.hypot(a.starX-b.starX,a.starY-b.starY)<.01);}
+ for(let t=0;t<=24;t+=.03){const p=filmPose(t);assert.ok(p.scaleY>=.95&&p.scaleY<=1.03);assert.ok(p.suiReach<120);assert.equal(filmPose(t,true).scaleY,1);}
 });

@@ -208,3 +208,6 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .continuous-film .short-sky:after{background:linear-gradient(180deg,#e8e9ef12,#fcf8ed00 50%,#fcf8ed66)}
 
 .moco-short.continuous-film .short-mystery-cloud span:first-child,.moco-short.continuous-film .short-mystery-cloud span:last-child{opacity:calc(1 - var(--film-cloud))}
+
+.film-rig.performing-moco .performer-rig{transform:translateY(calc(var(--film-bob)*1px)) rotate(calc(var(--film-tilt)*1deg)) scale(var(--film-scaleX),var(--film-scaleY))}
+.continuous-film .sui-rig{transform:translateY(calc(var(--film-suiBob)*1px)) rotate(calc(var(--film-suiTilt)*1deg)) scale(calc(1 / var(--film-suiScaleY)),var(--film-suiScaleY))}

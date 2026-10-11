@@ -46,23 +46,18 @@ export function filmCamera(seconds:number,reduced=false) {
   pan:key(t,[[0,0],[4,0],[5.4,-1.5],[6.6,-1.5],[8.4,0],[12,0],[15.8,-2.5],[20,-2.5],[22,0],[24,0]])};
 }
 export function filmStarPhase(seconds:number) {
- return seconds<12?'free':seconds<12.4?'pickup':seconds<13.4?'sui':seconds<15?'flight':'moco';
+ return seconds<12?'free':seconds<12.4?'pickup':seconds<14.1?'sui':seconds<14.5?'shared':'moco';
 }
 // Sui's 320×430 rig occupies 21.5% of a 16:9 stage, with its feet at 82%.
 function suiPose(t:number,reduced:boolean) {
  const walking=t>=10&&t<12.4&&!reduced;
  const stride=walking?Math.sin((t-10)/2.4*Math.PI*6):0;
- const suiX=key(t,[[0,74],[10,74],[12.4,61.5],[24,61.5]]);
+ const suiX=key(t,[[0,74],[10,74],[12.4,61.5],[13,61.5],[14.1,56.5],[15,56.5],[17,61.5],[24,61.5]]);
  const suiBob=-Math.abs(stride)*2+key(t,[[0,0],[11,0],[12,5],[13.4,0],[24,0]]);
  const suiTilt=stride*1.5+key(t,[[0,0],[10,0],[12,-4],[13.4,2],[15,0],[18,-3],[19.5,0],[24,0]]);
  const suiArmL=key(t,[[0,0],[11,0],[12,20],[13.4,58],[14,20],[15,0],[18,12],[21,0],[24,0]]);
- const rad=suiArmL*Math.PI/180, lean=suiTilt*Math.PI/180;
- const hx=110-16*Math.cos(rad),hy=327-16*Math.sin(rad);
- const px=160+(hx-160)*Math.cos(lean)-(hy-402)*Math.sin(lean);
- const py=402+(hx-160)*Math.sin(lean)+(hy-402)*Math.cos(lean)+suiBob;
- const height=21.5*430/320*16/9;
  return {suiX,suiTilt,suiBob,suiArmL,
-  suiHandX:suiX+px/320*21.5,suiHandY:82-height+py/430*height,
+  suiReach:0,suiScaleY:reduced?1:1-.018*Math.abs(stride),suiHandX:0,suiHandY:0,
   suiArmR:walking?-stride*5:key(t,[[0,0],[12,-6],[15,0],[18,-12],[21,-8],[24,0]]),
   suiHead:key(t,[[0,0],[7,-3],[10,-8],[12,-10],[13.4,3],[15,4],[18,-6],[21,0],[24,0]]),
   suiTuft:reduced?0:Math.sin(t*2.1-.6)*2-stride*3,
@@ -83,36 +78,51 @@ export function filmPose(seconds: number, reduced = false) {
  const tilt = stride * 1.7 + key(t, [[0,0],[2.4,-2],[4.5,1],[7,-3],[9.5,-2],[12,3],[15,0],[18,-2],[21,0],[24,0]]);
  const head = key(t, [[0,0],[2,7],[4.5,-5],[7,5],[9.5,-7],[12,8],[15,2],[18,-4],[21,0],[24,0]]);
  const armR = key(t, [[0,0],[4,-10],[5,-32],[7,-12],[9.5,3],[12,-8],[15,-25],[18,-25],[21,-25],[24,-25]]);
- const x = key(t, [[0,12],[2.4,12],[4.4,25],[7,25],[8,24],[12,24],[15,26],[24,26]]);
+ const x = key(t, [[0,12],[2.4,12],[4.4,25],[7,25],[8,24],[12,24],[13.4,26],[14.1,28],[15,28],[17,26],[24,26]]);
+ const reach=key(t,[[0,0],[13,0],[14.1,60],[14.5,60],[16,0],[24,0]]);
+ const scaleY=reduced?1:key(t,[[0,1],[14.5,1],[14.8,.978],[15.3,1],[20.6,1],[21,.965],[21.25,1.025],[21.5,1],[21.75,.975],[22,1.018],[22.25,1],[24,1]])-.012*Math.abs(stride);
+ const scaleX=1/scaleY;
  const sui = suiPose(t,reduced);
- // Held star follows the hand's shoulder rotation AND the common body transform.
- const rad = armR * Math.PI / 180;
- const hx = 257 + 16 * Math.cos(rad) - 13 * Math.sin(rad);
- const hy = 327 + 16 * Math.sin(rad) + 13 * Math.cos(rad);
- const lean = tilt * Math.PI / 180;
- const px = 200 + (hx - 200) * Math.cos(lean) - (hy - 390) * Math.sin(lean);
- const py = 390 + (hx - 200) * Math.sin(lean) + (hy - 390) * Math.cos(lean) + bob;
- const heldX = x + px / 400 * 36;
- const heldY = 14.8 + py / 420 * 67.2;
- const pickup=ease((t-12)/.4),flight=ease((t-13.4)/1.6);
+ // All coordinates use the same scale -> rotation -> translation as the SVG rig.
+ function point(px:number,py:number,cx:number,cy:number,tilt:number,bob:number,sy:number) {
+  const rad=tilt*Math.PI/180, dx=(px-cx)/sy,dy=(py-cy)*sy;
+  return {x:cx+dx*Math.cos(rad)-dy*Math.sin(rad),y:cy+dx*Math.sin(rad)+dy*Math.cos(rad)+bob};
+ }
+ const arm=armR*Math.PI/180;
+ const hx=257+(16+reach)*Math.cos(arm)-13*Math.sin(arm);
+ const hy=327+(16+reach)*Math.sin(arm)+13*Math.cos(arm);
+ const hand=point(hx,hy,200,390,tilt,bob,scaleY);
+ const heldX=x+hand.x/400*36,heldY=14.8+hand.y/420*67.2;
+ const suiHeight=21.5*430/320*16/9;
+ // Solve Sui's reach in her local space. During the shared hold, both palms
+ // coincide, including lean, squash and camera, rather than throwing the star.
+ if(t>=13.4&&t<16) {
+  const tx=(heldX-sui.suiX)/21.5*320,ty=(heldY-(82-suiHeight))/suiHeight*430;
+  const rad=-sui.suiTilt*Math.PI/180,dx=tx-160,dy=ty-sui.suiBob-402;
+  const localX=160+(dx*Math.cos(rad)-dy*Math.sin(rad))*sui.suiScaleY;
+  const localY=402+(dx*Math.sin(rad)+dy*Math.cos(rad))/sui.suiScaleY;
+  const vx=localX-110,vy=localY-327;
+  const contact=ease((t-13.4)/.7)*(1-ease((t-14.5)/1.5));
+  sui.suiArmL+=(Math.atan2(-vy,-vx)*180/Math.PI-sui.suiArmL)*contact;
+  sui.suiReach=Math.max(0,Math.hypot(vx,vy)-16)*contact;
+ }
+ const suiArm=sui.suiArmL*Math.PI/180;
+ const palm=point(110-(16+sui.suiReach)*Math.cos(suiArm),327-(16+sui.suiReach)*Math.sin(suiArm),160,402,sui.suiTilt,sui.suiBob,sui.suiScaleY);
+ sui.suiHandX=sui.suiX+palm.x/320*21.5;
+ sui.suiHandY=82-suiHeight+palm.y/430*suiHeight;
+ const pickup=ease((t-12)/.4);
  const freeX=key(t,[[0,50],[7,50],[9.5,68],[24,68]]);
  const freeY=key(t,[[0,38],[4.5,38],[7,43],[9.5,70],[24,70]]);
- let starX=freeX+(sui.suiHandX-freeX)*pickup;
- let starY=freeY+(sui.suiHandY-freeY)*pickup;
- if(t>=13.4&&t<15) {
-  const release=suiPose(13.4,false);
-  // A gentle delivery arc starts exactly on Sui's hand and ends on Moco's.
-  starX=release.suiHandX+(heldX-release.suiHandX)*flight;
-  starY=release.suiHandY+(heldY-release.suiHandY)*flight-Math.sin(Math.PI*flight)*5;
- } else if(t>=15) {starX=heldX;starY=heldY;}
+ const starX=t<14.5?freeX+(sui.suiHandX-freeX)*pickup:heldX;
+ const starY=t<14.5?freeY+(sui.suiHandY-freeY)*pickup:heldY;
  const blink = reduced ? 1 : 1 - .93 * Math.max(0, ...[1.3,5.9,10.8,13.1,16.4,20,23.6].map(at => Math.max(0, 1 - Math.abs(t - at) / .09)));
  return {
-  blink, shadow: 1 + bob * .018, x, bob, tilt, head, armR, armL: walking ? stride * 8 : key(t, [[0,0],[9.5,12],[12,0],[18,16],[21,8],[24,8]]),
+  blink, shadow: scaleX + bob * .018, scaleX,scaleY,reach,heldX,heldY, x, bob, tilt, head, armR, armL: walking ? stride * 8 : key(t, [[0,0],[9.5,12],[12,0],[18,16],[21,8],[24,8]]),
   footL: Math.max(0, stride) * -5 - (walking ? bob : 0), footR: Math.max(0, -stride) * -5 - (walking ? bob : 0),
   tuft: -head * .55 + (!reduced ? Math.sin(t * 2.2 - .35) * 1.5 : 0),
   gaze: key(t, [[0,0],[2,5],[7,7],[9.5,2],[12,7],[18,5],[21,0],[24,0]]),
   ...sui, turn:key(t,[[0,0],[9.5,-.15],[12,0],[14.5,.85],[18,.6],[21,.3],[24,0]]), starX,starY,
-  starScale:t<13.4?1-pickup*.42:.58-flight*.06, starOpacity: ease((t - 3.8) / .7), cloud: ease((t - 4.2) / 1.4),
+  starScale:1-pickup*.48, starOpacity: ease((t - 3.8) / .7), cloud: ease((t - 4.2) / 1.4),
   camera: reduced ? 1 : 1 + .025 * ease(t / 24),
  };
 }

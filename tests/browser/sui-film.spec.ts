@@ -24,7 +24,7 @@ test('Sui picks up the star with an attached hand, delivers it, and all parts pa
  const frozen=await page.locator('.moco-short').getAttribute('style');
  await page.clock.runFor(1000);expect(await page.locator('.moco-short').getAttribute('style')).toBe(frozen);
  await page.getByRole('button',{name:'つづきを、みる',exact:true}).click();
- await page.clock.runFor(1500);await expect(page.locator('.short-star')).toHaveAttribute('data-owner','flight');
+ await page.clock.runFor(1500);await expect(page.locator('.short-star')).toHaveAttribute('data-owner','shared');
  await page.clock.runFor(1200);await expect(page.locator('.short-star')).toHaveAttribute('data-owner','moco');
  await expect(page.getByRole('img',{name:'スイ・やさしい',exact:true})).toBeVisible();
 });

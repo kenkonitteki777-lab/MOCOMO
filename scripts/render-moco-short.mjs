@@ -7,7 +7,7 @@ const runtimePath = process.env.MOCOMO_CHROMIUM_PATH;
 const browser = await chromium.launch({...(runtimePath ? {executablePath:runtimePath}:{}),args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu']});
 const captureDir = '../browser-runtime/movie-capture';
 await mkdir(captureDir,{recursive:true});
-const framesDir = `${captureDir}/frames-v4-${Date.now()}`;
+const framesDir = `${captureDir}/frames-v5-${Date.now()}`;
 console.log(`capture frames: ${framesDir}`);
 await mkdir(framesDir,{recursive:true});
 const context = await browser.newContext({viewport:{width:1280,height:720},deviceScaleFactor:1});
@@ -46,6 +46,6 @@ for (let frame = 0; frame < Math.ceil((filmDuration + .4) * fps); frame++) {
 }
 await context.close();await browser.close();
 await mkdir('public/movies',{recursive:true});
-const result=spawnSync('ffmpeg',['-y','-framerate',String(fps),'-i',`${framesDir}/%04d.jpg`,'-an','-c:v','libx264','-preset','slow','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart','public/movies/first-star-v4.mp4'],{encoding:'utf8'});
+const result=spawnSync('ffmpeg',['-y','-framerate',String(fps),'-i',`${framesDir}/%04d.jpg`,'-an','-c:v','libx264','-preset','slow','-crf','28','-pix_fmt','yuv420p','-movflags','+faststart','public/movies/first-star-v5.mp4'],{encoding:'utf8'});
 if(result.status!==0)throw new Error(result.stderr);
-console.log('public/movies/first-star-v4.mp4');
+console.log('public/movies/first-star-v5.mp4');
