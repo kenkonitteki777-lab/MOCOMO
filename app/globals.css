@@ -169,7 +169,7 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .moco-short.continuous-film .short-sui{left:calc(var(--film-suiX)*1%);right:auto;bottom:18%;width:24%;height:46%;animation:none!important;transition:none;transform:rotate(calc(var(--film-suiTilt)*1deg))}
 .moco-short.continuous-film .short-star{left:calc(var(--film-starX)*1%);top:calc(var(--film-starY)*1%);width:5.5%;height:auto;aspect-ratio:1;opacity:var(--film-starOpacity);transition:none;transform:translate(-50%,-50%) scale(var(--film-starScale))}
 .moco-short.continuous-film .short-mystery-cloud{left:43%;top:32%;width:17%;height:14%}
-.moco-short.continuous-film .short-mystery-cloud span{transition:none;opacity:calc(1 - var(--film-cloud)*.92)}
+.moco-short.continuous-film .short-mystery-cloud span{transition:none;opacity:calc(1 - var(--film-cloud))}
 .moco-short.continuous-film .short-mystery-cloud span:first-child{transform:translateX(calc(var(--film-cloud)*-50%))}
 .moco-short.continuous-film .short-mystery-cloud span:last-child{transform:translateX(calc(var(--film-cloud)*50%))}
 .moco-short.continuous-film .short-sky{transform:scale(var(--film-camera));transition:none}
@@ -194,3 +194,17 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .film-rig.performing-moco .performer-face{transform:translateX(calc(var(--film-gaze)*1px + var(--film-turn)*12px))}
 .film-rig .performer-eye-far{transform-origin:138px 221px;transform:translateX(calc(var(--film-turn)*10px)) scaleX(calc(1 - var(--film-turn)*.18))}
 .film-rig .performer-eye-near{transform:translateX(calc(var(--film-turn)*-5px))}
+
+/* One stage transform keeps hands, star and background in the same camera. */
+.short-stage{position:absolute;inset:0;isolation:isolate;transform-origin:50% 58%}
+.continuous-film .short-stage{transform:translateX(calc(var(--film-shotPan)*1%)) scale(var(--film-shotZoom));transition:none}
+.short-atmosphere{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 48% 46%,#fff7df18 0%,transparent 55%)}
+.short-title,.short-caption{z-index:2;pointer-events:none}
+.short-caption{padding:4px 10px;width:fit-content;max-width:90%;margin:0 auto;border-radius:12px;background:#fffdf180;text-shadow:0 1px 3px #fffdf3}
+.continuous-film .short-title{opacity:.7}
+.short-feeling-view .short-stage{transform:none}
+
+.continuous-film .short-sky{background-image:url('/world/films/first-star-v1.webp');background-size:cover;background-position:50% 50%}
+.continuous-film .short-sky:after{background:linear-gradient(180deg,#e8e9ef12,#fcf8ed00 50%,#fcf8ed66)}
+
+.moco-short.continuous-film .short-mystery-cloud span:first-child,.moco-short.continuous-film .short-mystery-cloud span:last-child{opacity:calc(1 - var(--film-cloud))}

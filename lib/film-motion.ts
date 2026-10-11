@@ -1,5 +1,6 @@
 // Time-driven acting: one clock controls the body, feet, gaze, cloud and star.
 // Coordinates for the rig are measured in its 400 × 420 viewBox.
+import { blendFace, mocoFaces, suiFaces } from './face-performance';
 export const filmDuration = 24;
 export const filmScenes = [
  { start: 0, feeling: 'calm', action: 'rest', gaze: 0, text: '雲のむこうで、なにかが、きらり。' },
@@ -27,6 +28,22 @@ function key(t: number, points: [number, number][]) {
 }
 export function suiFeeling(seconds:number) {
  return (['calm','curious','curious','curious','concerned','focused','kind','shy','joy'] as const)[filmFrame(seconds)];
+}
+export function filmFaces(seconds:number,reduced=false) {
+ const t=Number.isFinite(seconds)?Math.max(0,Math.min(filmDuration,seconds)):0;
+ const frame=filmFrame(t), previous=Math.max(0,frame-1);
+ const progress=reduced?1:(t-filmScenes[frame].start)/.65;
+ return {
+  moco:blendFace(mocoFaces[filmScenes[previous].feeling],mocoFaces[filmScenes[frame].feeling],progress),
+  sui:blendFace(suiFaces[suiFeeling(filmScenes[previous].start)],suiFaces[suiFeeling(filmScenes[frame].start)],progress),
+ };
+}
+// A continuous move, rather than a cut, preserves the hand/star geometry.
+export function filmCamera(seconds:number,reduced=false) {
+ if(reduced)return {zoom:1,pan:0};
+ const t=Number.isFinite(seconds)?Math.max(0,Math.min(24,seconds)):0;
+ return {zoom:key(t,[[0,1],[4,1],[5.4,1.12],[6.6,1.12],[8.4,1],[12,1],[15.8,1.08],[18.6,1.12],[20,1.12],[22,1],[24,1]]),
+  pan:key(t,[[0,0],[4,0],[5.4,-1.5],[6.6,-1.5],[8.4,0],[12,0],[15.8,-2.5],[20,-2.5],[22,0],[24,0]])};
 }
 export function filmStarPhase(seconds:number) {
  return seconds<12?'free':seconds<12.4?'pickup':seconds<13.4?'sui':seconds<15?'flight':'moco';

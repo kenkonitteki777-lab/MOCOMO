@@ -36,6 +36,6 @@ export default function AnimationTheater({ standalone = false, quiet = false }: 
       <button aria-pressed={feelingView} onClick={() => { pause(); setFeelingView(v => !v); }}>モコモのきもちで、あそぶ</button>
       {standalone && <a href="/">モコモの世界にもどる</a>}
     </div>
-    {feelingView ? <div className="theater-feelings"><p role="status">{mocoFeelings.find(v => v[0] === (feeling ?? 'calm'))![2]}</p><div role="group" aria-label="モコモのきもち">{mocoFeelings.map(([id, label]) => <button key={id} aria-pressed={(feeling ?? 'calm') === id} onClick={() => setFeeling(id)}>{label}</button>)}</div></div> : <><p className="theater-note">24秒の、小さなおはなし。音なしでも、ゆっくり楽しめるよ。</p><a className="movie-file-link" href="/movies/first-star-v3.mp4">動画でも、みる</a></>}
+    {feelingView ? <div className="theater-feelings"><p role="status">{mocoFeelings.find(v => v[0] === (feeling ?? 'calm'))![2]}</p><div role="group" aria-label="モコモのきもち">{mocoFeelings.map(([id, label]) => <button key={id} aria-pressed={(feeling ?? 'calm') === id} onClick={() => setFeeling(id)}>{label}</button>)}</div></div> : <><p className="theater-note">24秒の、小さなおはなし。音なしでも、ゆっくり楽しめるよ。</p><a className="movie-file-link" href="/movies/first-star-v4.mp4">動画でも、みる</a></>}
   </section>;
 }
