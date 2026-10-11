@@ -1,4 +1,6 @@
-# MOCOMO character master · v0.4
+# MOCOMO character master · v0.5
+
+最新の制作基準は [MOCO-REDESIGN.md](MOCO-REDESIGN.md)。2026-10-12 JSTにユーザーが新しい非対称の雲一体形で制作を進めることを了承。下記v0.4素材は旧作品を維持するための履歴。新素材の移行範囲・未完成部分は末尾と新仕様を参照。
 
 ## Selected reference
 
@@ -35,3 +37,6 @@ Built-in image generation / identity-preserve。上記ブランドガイド中�
 現在は上記3表情に `reactions-v1.webp` のlaugh／listen／tickle／thanksが加わり、計7表情。`motion-v1.webp` にcrouch／flight／land／waveの4ポーズ。上記初期3表情だけという記述は履歴。全身画像方式のため表情とポーズの自由な合成は未対応。
 
 ユーザーが表情と汎用性の不足を根本課題と指摘。次は機能追加より演技可能なマスターと媒体展開を優先する。感情・動作・短編・商品向け平面表現の制作方針は `CHARACTER-PERFORMANCE.md`。新造形や動作基盤、動画はまだ完成していない。
+
+## 新モコモへの移行 — 2026-10-12 JST
+ユーザーが旧造形の抜本的再検討を指示し、非対称の雲一体形＋短い頬線の新案で進めることを了承。新しい制作基準は [MOCO-REDESIGN.md](MOCO-REDESIGN.md)（ルートからは docs/MOCO-REDESIGN.md）。Moco共通7表情とホームのふれあいを新しい透過WebPへ移行。旧のジャンプ専用ポーズは新造形の全身変形に移行。独立部品演技・既存短編v1–v7・絵本専用画像・仲間は旧素材が残り、移行未完。商品モックアップ、子供の反応、製造適性は未検証。今回の了承は新案を基準に制作する指示であり、商用最終マスターの完成ではない。検証結果と公開実測は完了後に記録する。
