@@ -28,3 +28,7 @@ unit14件、型チェック、production build成功。関連production browser4
 
 ## 未完成
 これは一つの共同保持カットで、星を拾って近づき、片方から片方へ渡す連続した新リグではない。頭や掌だけの接触変形と真横／後ろ造形も未制作。全身の一枚画像を小さく変形する方式なので、二人それぞれの重心を独立に動かす演技は未実装。生成による輪郭の微細なにじみと造形寸法の差は残り、印刷・製造用の最終マスターではない。「20倍」の品質達成や親子の評価結果ではない。旧24秒短編・他の絵本・他仲間は段階的な移行が必要。本番認証／家庭別保存、実機フレームレートと親子試用は今回未検証。
+
+公開実測: 実装commit `caf374ff0540a8329179a9df06f756f6af90c35e` はGitHub mainへ反映。GitHub combined statusは空で自動デプロイが始まらなかったため、Vercelの既存プロジェクト `prj_wGDaKz57zbzG8Y7X4HX9pyRhD02A`（ozma1/mocomo、同じチーム）にGitソースと同SHAを指定してproductionを作成。`dpl_Qf4JheULGmV4gQp3Cft6i5X5gujk` のREADY・commit SHA一致・aliasErrorなし・mocomo-lake.vercel.appへの割当を管理APIで確認。新プロジェクトやAppDeployは使わない。今回、team引数を付けないget_project／list_deployments／get_deployment／create_deploymentは成功し、以前の管理API403だけを現在の不可状態として扱わない。
+
+https://mocomo-lake.vercel.app/shorts/together の1254×1254素材のデコード、再生→途中停止で全身行列と二人の口のパスと字幕が完全固定→続き→二人の笑顔（口の開き14／10）→再視聴、手動・OS動き低減、320／390／760／1440pxの顔の収まりと横はみ出しなしを操作確認。既存shorts/first-starから新場面へのリンクも操作。実記憶追加なし、JavaScriptエラー0。公開MP4は8.416667秒／1280×960、追加の動画デコード確認でreadyState4。Git blob `187f09d84c556903665b26118d6aa6c5c28a05a6`。公開の笑顔画面を日本語フォントで目視。全編の新造形リグ、独立した掌と頭の変形、横後ろマスター、他仲間・残りの絵本、実機・親子の評価、本番認証と家庭別保存は今回未完／未検証。
