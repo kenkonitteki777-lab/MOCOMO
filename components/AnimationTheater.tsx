@@ -35,6 +35,7 @@ export default function AnimationTheater({ standalone = false, quiet = false }: 
   function replay() { setRun(v => v + 1); clock.current = 0; setSeconds(0); setFeelingView(false); setFeeling(undefined); setPlaying(true); }
   return <section className={`animation-theater ${standalone ? 'theater-standalone' : ''}`} aria-label="モコモのちいさなアニメ">
     <MocoShort seconds={seconds} quiet={quiet || reduce} still={!playing} feeling={feelingView ? feeling ?? 'calm' : undefined} />
+    <a className="together-door" href="/shorts/together"><strong>ほしを、まんなかに</strong><span>モコモとスイが、星をいっしょに支えるおはなし →</span></a>
     <div className="theater-controls">
       <button className="primary" onClick={playing ? pause : play}>{playing ? 'いったん、とめる' : seconds >= firstStarDuration ? 'もういちど、みる' : seconds > 0 ? 'つづきを、みる' : 'アニメをみる'}</button>
       {seconds > 0 && <button onClick={replay}>はじめから</button>}
