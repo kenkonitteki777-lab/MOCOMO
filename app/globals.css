@@ -248,3 +248,12 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 .home-interaction[data-phase=idle] .new-moco-actor{animation:moco-cloud-breath 6.4s ease-in-out infinite}.home-interaction[data-phase=notice] .new-moco-actor{transform:translateY(-1px) rotate(-1deg)}.home-interaction[data-kind=wind][data-phase=notice] .new-moco-actor{transform:rotate(1deg)}
 @keyframes moco-cloud-breath{0%,100%{transform:none}50%{transform:translateY(-1px) scale(1.004,1.006)}}
 @media(prefers-reduced-motion:reduce){.home-interaction .new-moco-actor{animation:none!important;transform:none!important}}
+
+/* One-piece approved cloud actor: face and whole-body weight share one transform. */
+.cloud-moco-body{transform-origin:208px 390px;animation:cloud-actor-breathe 6.4s ease-in-out infinite}.cloud-moco .performer-blink{animation:performer-blink 6.8s 1s infinite}.cloud-moco[data-action=look] .cloud-moco-body{animation:cloud-actor-look 1.3s ease-in-out}.cloud-moco[data-action=reach] .cloud-moco-body,.cloud-moco[data-action=share] .cloud-moco-body{animation:cloud-actor-share 1.6s ease-in-out}.cloud-moco[data-action=celebrate] .cloud-moco-body{animation:cloud-actor-joy 1.6s ease-in-out}.cloud-moco[data-action=breeze] .cloud-moco-body{animation:cloud-actor-breeze 2.2s ease-in-out}.cloud-moco[data-action=step] .cloud-moco-body{animation:cloud-actor-look 1.3s ease-in-out}.cloud-moco-face-anchor{transition:none}.cloud-moco.cloud-still *{animation:none!important;transition:none!important}
+@keyframes cloud-actor-breathe{0%,100%{transform:none}50%{transform:translateY(-1px) scale(1.004,1.006)}}
+@keyframes cloud-actor-look{0%,100%{transform:none}35%{transform:rotate(-1.7deg) translateY(-1px)}70%{transform:rotate(-.6deg)}}
+@keyframes cloud-actor-share{0%,100%{transform:none}20%{transform:translateY(2px) scale(1.006,.99)}50%{transform:rotate(-1.8deg) translateX(2px)}80%{transform:rotate(-.4deg)}}
+@keyframes cloud-actor-joy{0%,100%{transform:none}20%{transform:translateY(3px) scale(1.016,.977)}48%{transform:translateY(-4px) scale(.995,1.012)}72%{transform:translateY(1px) scale(1.004,.994)}}
+@keyframes cloud-actor-breeze{0%,100%{transform:none}30%{transform:rotate(-2deg)}60%{transform:rotate(1deg)}82%{transform:rotate(-.3deg)}}
+@media(prefers-reduced-motion:reduce){.cloud-moco *{animation:none!important;transition:none!important}}

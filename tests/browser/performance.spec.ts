@@ -5,10 +5,10 @@ test('independent facial parts expose twelve feelings and a controlled short sto
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.clock.install({time:new Date('2026-10-10T00:00:00Z')});await page.goto('/shorts/first-star');await page.clock.pauseAt(new Date('2026-10-10T01:00:00Z'));
  await page.getByRole('button',{name:'モコモのきもちで、あそぶ',exact:true}).click();
  const options=page.getByRole('group',{name:'モコモのきもち'}).getByRole('button');await expect(options).toHaveCount(12);
- for(const label of ['うれしい','こまった','さびしい','なきそう','むっとする','てれる','とくい','ねむい','いたずら']){await page.getByRole('button',{name:label,exact:true}).click();await expect(page.getByRole('img',{name:`モコモ・${label}`,exact:true})).toBeVisible();}
- await page.getByRole('button',{name:'こまった',exact:true}).click();await page.screenshot({path:'test-results/moco-performance-confused.png'});
+ for(const label of ['うれしい','こまった','さびしい','なきそう','むっとする','てれる','とくい','ねむい','いたずら']){await page.getByRole('button',{name:label,exact:true}).click();await page.clock.runFor(500);await expect(page.getByRole('img',{name:`モコモ・${label}`,exact:true})).toBeVisible();}
+ await page.getByRole('button',{name:'こまった',exact:true}).click();await page.clock.runFor(500);await page.screenshot({path:'test-results/moco-performance-confused.png'});
  const decoded=await page.locator('.performing-moco image').first().evaluate(async e=>{const im=new Image();im.src=e.getAttribute('href')!;await im.decode();return im.naturalWidth>0;});expect(decoded).toBe(true);
- const paths=await page.locator('.performer-face').innerHTML();await page.getByRole('button',{name:'うれしい',exact:true}).click();expect(await page.locator('.performer-face').innerHTML()).not.toBe(paths);
+ const paths=await page.locator('.character-face-detail').innerHTML();await page.getByRole('button',{name:'うれしい',exact:true}).click();await page.clock.runFor(500);await expect.poll(()=>page.locator('.character-face-detail').innerHTML()).not.toBe(paths);
  await page.getByRole('button',{name:'アニメをみる',exact:true}).click();await page.clock.runFor(2100);await expect(page.locator('.moco-short')).toHaveAttribute('data-frame','1');
  await page.getByRole('button',{name:'いったん、とめる',exact:true}).click();const paused=await page.locator('.moco-short').getAttribute('data-frame');
  await expect(page.getByRole('button',{name:'つづきを、みる',exact:true})).toBeVisible();
@@ -28,6 +28,6 @@ test('shelf opens and closes movie safely; quiet mode stops movement but preserv
  await modal.getByRole('button',{name:'絵本だなにもどる'}).click();await expect(modal).not.toBeVisible();
  await page.getByRole('button',{name:/モコモのちいさなアニメ/}).click();await expect(modal.locator('.moco-short')).toHaveAttribute('data-frame','0');
  await page.emulateMedia({reducedMotion:'reduce'});await modal.getByRole('button',{name:'モコモのきもちで、あそぶ',exact:true}).click();await modal.getByRole('button',{name:'うれしい',exact:true}).click();
- expect(await modal.locator('.performer-head').evaluate(e=>getComputedStyle(e).animationName)).toBe('none');await expect(modal.getByRole('img',{name:'モコモ・うれしい'})).toBeVisible();
+ expect(await modal.locator('.cloud-moco-body').evaluate(e=>getComputedStyle(e).animationName)).toBe('none');await expect(modal.getByRole('img',{name:'モコモ・うれしい'})).toBeVisible();
  await page.screenshot({path:'test-results/moco-movie-mobile.png'});await page.keyboard.press('Escape');await expect(modal).not.toBeVisible();
 });

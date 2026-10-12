@@ -61,7 +61,7 @@ test('cloud touch sizes, quiet mode, reduced motion and exiting mid-reveal remai
   await expect(page.locator('.seek-pouch [role=img]')).toHaveCount(1);
   await page.getByRole('button', { name: 'スイに、みせる', exact: true }).click();
   await expect(page.getByRole('img', { name: 'モコモ・うれしい', exact: true })).toBeVisible();
-  expect(await page.locator('.performer-body').evaluate(e => getComputedStyle(e).animationName)).toBe('none');
+  expect(await page.locator('.cloud-moco-body').evaluate(e => getComputedStyle(e).animationName)).toBe('none');
   expect(await page.locator('.seek-moco').evaluate(e => getComputedStyle(e).animationName)).toBe('none');
   await page.getByRole('button', { name: /おうち FAMILY/ }).click(); await page.getByRole('button', { name: '私は保護者です' }).click();
   await page.getByRole('switch', { name: /動きをひかえめに/ }).click();

@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
 import Character from './Character';
-import PerformingMoco from './PerformingMoco';
+import CloudMoco from './CloudMoco';
 import Scene from './Scene';
 
 type Moment = 'together' | 'wind' | 'sleep';
@@ -30,7 +30,7 @@ export default function RestGame({ busy, quiet, finish, close }: {
   <div ref={stage} className="rest-stage-anchor">
    <Scene scene="rest" className={`play-scene luna-rest-stage ${quiet ? 'still' : ''}`}>
     <span className="luna-soft-moon" aria-hidden="true">☾</span>
-    <div className="luna-rest-moco"><PerformingMoco feeling={done ? 'calm' : selected.feeling} action={done ? 'rest' : selected.action} quiet={quiet}/></div>
+    <div className="luna-rest-moco"><CloudMoco feeling={done ? 'calm' : selected.feeling} action={done ? 'rest' : selected.action} quiet={quiet}/></div>
     <Character id="luna" mood="rest" className={`play-companion luna-rest-friend ${!done && moment === 'wind' ? 'luna-feels-wind' : ''}`}/>
     {!done && moment === 'wind' && <span className="luna-wind-ribbon" aria-hidden="true">〜 〜</span>}
    </Scene>

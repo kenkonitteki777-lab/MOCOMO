@@ -1,17 +1,19 @@
 import type { CSSProperties } from 'react';
 import PerformingMoco from './PerformingMoco';
+import CloudMoco from './CloudMoco';
 import PerformingSui from './PerformingSui';
 import { filmShot, filmCamera, filmFaces, filmPose, filmStarPhase, suiFeeling } from '../lib/film-motion';
 import { firstStarFrame, firstStarScenes, type MocoFeeling } from '../lib/moco-performance';
 export default function MocoShort({ seconds, quiet = false, still = false, feeling }: { seconds: number; quiet?: boolean; still?: boolean; feeling?: MocoFeeling }) {
+ const quietMode=quiet||(!feeling&&still);
  const frame = firstStarFrame(seconds), scene = firstStarScenes[frame], pose = filmPose(seconds, quiet);
  const faces=filmFaces(seconds,quiet), camera=filmCamera(seconds,quiet);
  const style = Object.fromEntries(Object.entries({...pose,shotZoom:camera.zoom,shotPan:camera.pan}).map(([key, value]) => [`--film-${key}`, value])) as CSSProperties;
- return <div className={`moco-short ${quiet || still ? 'short-quiet' : ''} ${feeling ? 'short-feeling-view' : 'continuous-film'}`} data-shot={feeling ? "portrait" : filmShot(seconds)} data-frame={frame} style={style}>
+ return <div className={`moco-short ${quietMode ? 'short-quiet' : ''} ${feeling ? 'short-feeling-view' : 'continuous-film'}`} data-shot={feeling ? "portrait" : filmShot(seconds)} data-frame={frame} style={style}>
   <div className="short-stage">
   <div className="short-sky" aria-hidden="true"/>
   <div className="short-atmosphere" aria-hidden="true"/>
-  <div className="short-moco"><PerformingMoco feeling={feeling ?? scene.feeling} reach={feeling?0:pose.reach} facePose={feeling?undefined:faces.moco} action={feeling ? feeling === 'joy' ? 'celebrate' : feeling === 'shy' ? 'share' : 'rest' : scene.action} gaze={feeling ? 0 : scene.gaze} quiet={quiet || still} film={!feeling}/></div>
+  <div className="short-moco">{feeling?<CloudMoco feeling={feeling} action={feeling==='joy'?'celebrate':'rest'} quiet={quiet}/>:<PerformingMoco feeling={feeling ?? scene.feeling} reach={feeling?0:pose.reach} facePose={feeling?undefined:faces.moco} action={feeling ? feeling === 'joy' ? 'celebrate' : feeling === 'shy' ? 'share' : 'rest' : scene.action} gaze={feeling ? 0 : scene.gaze} quiet={quiet || still} film={!feeling}/>}</div>
   {!feeling && <>
    <div className="short-sui" data-happy={frame >= 5}><PerformingSui feeling={suiFeeling(seconds)} reach={pose.suiReach} facePose={faces.sui} quiet={quiet || still}/></div>
    <svg className="short-breeze" viewBox="0 0 120 120" aria-hidden="true"><path d="M10 20Q75 0 82 42T68 85Q52 99 104 105M23 37Q60 26 63 46" fill="none" stroke="#fffdf4" strokeWidth="2" strokeLinecap="round"/></svg>
