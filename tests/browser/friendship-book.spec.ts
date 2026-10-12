@@ -5,7 +5,7 @@ test('six illustrated story pages show the emotional arc without adding fictiona
  await page.getByRole('button',{name:/モコモとスイのおはなし/}).click();
  const book=page.getByRole('article',{name:'ほしを、まんなかに'});
  await expect(book.getByText('1 / 6',{exact:true})).toBeVisible();
- const expected=['はじめての、こんにちは','ふたりで、みつけた','ぼくも、もちたい','いえない、ことば','もういちど、いっしょに','ほしを、まんなかに'];
+ const expected=['はじめての、こんにちは','ふたりで、みつけた','はやく、わたしたくて','いえない、ことば','もういちど、いっしょに','ほしを、まんなかに'];
  const sources:string[]=[];
  for(let i=0;i<6;i++){
   await expect(book.locator('.story-title')).toHaveText(expected[i]);

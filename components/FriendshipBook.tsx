@@ -8,6 +8,7 @@ export default function FriendshipBook({story,initialIndex=0,onProgress,onHome,o
  function change(next:number){setIndex(next);onProgress(next);}
  function turn(next:number){change(next);picture.current?.scrollIntoView({block:'start',behavior:'auto'});}
  return <article className="friendship-book" aria-label={story.title}>
+  {story.pages[index+1]&&<link rel="preload" as="image" href={story.pages[index+1].image}/>}
   <header className="friendship-heading"><p className="eyebrow">{story.subtitle}</p><h2>{story.title}</h2><p>{story.description}</p></header>
   <ImmersiveReader story={story} index={index} onTurn={change} onHome={onHome}/>
   <figure ref={picture} className="friendship-picture"><img key={page.image} src={page.image} width="1536" height="1024" alt={page.alt}/></figure>
