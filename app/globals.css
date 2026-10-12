@@ -257,3 +257,11 @@ main[data-room=world]{background:radial-gradient(ellipse at 50% 180px,#e8f0e750,
 @keyframes cloud-actor-joy{0%,100%{transform:none}20%{transform:translateY(3px) scale(1.016,.977)}48%{transform:translateY(-4px) scale(.995,1.012)}72%{transform:translateY(1px) scale(1.004,.994)}}
 @keyframes cloud-actor-breeze{0%,100%{transform:none}30%{transform:rotate(-2deg)}60%{transform:rotate(1deg)}82%{transform:rotate(-.3deg)}}
 @media(prefers-reduced-motion:reduce){.cloud-moco *{animation:none!important;transition:none!important}}
+
+/* Sui watches first, then answers with a small delayed nod. Whole body stays connected. */
+.soft-sui{display:block;width:100%;height:auto;overflow:visible}.soft-sui-body{transform-origin:160px 299px;animation:soft-sui-breathe 7.8s ease-in-out infinite}.soft-sui .sui-eye{transform:none;animation:performer-blink 8.2s 2.4s infinite}.soft-sui-gaze{transition:transform .42s ease-out}.soft-sui[data-action=watch] .soft-sui-body{animation:soft-sui-watch 1.6s ease-in-out .18s both}.soft-sui[data-action=listen] .soft-sui-body{animation:soft-sui-listen 1.7s ease-in-out .18s both}.soft-sui[data-action=nod] .soft-sui-body{animation:soft-sui-nod 1.3s ease-in-out .18s both}.seek-sui[data-reaction]{animation:none}.seek-sui .soft-sui{width:100%}.seek-room .game-complete .soft-sui{width:34%;max-width:160px}.soft-sui.sui-still *{animation:none!important;transition:none!important}
+@keyframes soft-sui-breathe{0%,100%{transform:none}50%{transform:translateY(-.6px) scale(1.003,1.004)}}
+@keyframes soft-sui-watch{0%,100%{transform:none}38%{transform:rotate(-1.6deg)}74%{transform:rotate(-.5deg)}}
+@keyframes soft-sui-listen{0%,100%{transform:none}40%{transform:rotate(-1.4deg) translateX(-1px)}72%{transform:rotate(-.4deg)}}
+@keyframes soft-sui-nod{0%,100%{transform:none}32%{transform:translateY(1.8px) scale(1.006,.992) rotate(-1.2deg)}58%{transform:translateY(-.6px) rotate(.4deg)}82%{transform:translateY(.3px)}}
+@media(prefers-reduced-motion:reduce){.soft-sui *{animation:none!important;transition:none!important}}

@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 import CloudMoco from './CloudMoco';
-import Character from './Character';
+import SoftSui from './SoftSui';
 import Scene from './Scene';
 
 const items = ['星', 'はっぱ', 'ハート'] as const;
@@ -47,6 +47,9 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
   const feeling = reaction === 'opening' ? 'curious' : reaction === 'empty' ? 'confused' : reaction === 'sharing' || reaction === 'hello' ? 'proud' : shared ? 'joy' : found ? 'surprise' : 'calm';
   const action = reaction === 'opening' ? 'step' : reaction === 'sharing' ? 'share' : reaction === 'shared' ? 'celebrate' : reaction === 'empty' ? 'look' : 'rest';
   const gaze = reaction === 'sharing' || reaction === 'hello' ? 1 : activeCloud === null ? 0 : activeCloud - 1;
+  const suiFeeling = reaction === 'opening' ? 'focused' : reaction === 'empty' ? 'concerned' : reaction === 'sharing' ? 'kind' : reaction === 'hello' ? 'shy' : shared ? 'joy' : found ? 'curious' : 'calm';
+  const suiAction = reaction === 'hello' || reaction === 'shared' ? 'nod' : reaction === 'sharing' ? 'listen' : reaction === 'opening' || reaction === 'found' || reaction === 'empty' ? 'watch' : 'rest';
+  const suiGaze = reaction === 'sharing' || reaction === 'shared' || reaction === 'hello' ? -1 : activeCloud === null ? 0 : (activeCloud - 2) / 2;
   function showStage() { room.current?.querySelector('.seek-stage')?.scrollIntoView({ block: 'center', behavior: 'instant' }); }
 
   useEffect(() => {
@@ -131,10 +134,11 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
 
   return <section ref={room} className={`game-room rich-game green seek-room ${quiet ? 'seek-quiet' : ''}`} aria-labelledby="game-title">
     <link rel="preload" as="image" href="/characters/moco/performance/cloud-body-v3.webp" />
+    <link rel="preload" as="image" href="/characters/sui/performance/soft-body-v2.webp" />
     <button className="text-button" disabled={busy || saving} onClick={close}>← あそびをえらぶ</button>
     <p className="eyebrow">スイと、小さなひみつを みつける</p><h2 id="game-title">ひみつさがし</h2>
     {done ? <>
-      <Scene scene="seek" className="game-complete"><CloudMoco feeling="joy" quiet={quiet} /><Character id="sui" mood="wonder" /></Scene>
+      <Scene scene="seek" className="game-complete"><CloudMoco feeling="joy" quiet={quiet} /><SoftSui feeling="joy" quiet={quiet} label="スイ・わくわく" /></Scene>
       <h3>きみが、みつけたひみつ。</h3><p>見つけたものが、雲の庭と記憶の絵本に残るよ。</p>
       <button disabled={!replayReady} onClick={() => { setDone(false); setDiscoveries([]); newSearch(); }}>もういちど、さがす</button>
       <button disabled={!replayReady} onClick={close}>別のあそびをえらぶ</button>
@@ -150,7 +154,7 @@ export default function SeekGame({ busy, quiet, finish, close, onStory }: {
           </button>)}
         </div>
         <div className="seek-moco" data-reaction={reaction} data-cloud={activeCloud}><CloudMoco feeling={feeling} action={action} gaze={gaze} quiet={quiet} /></div>
-        <button className="seek-sui" data-reaction={reaction} aria-label="スイに、こんにちは" disabled={disabled} onClick={hello}><Character id="sui" mood={found || reaction === 'hello' ? 'wonder' : 'happy'} /><span aria-hidden="true">スイ</span></button>
+        <button className="seek-sui" data-reaction={reaction} aria-label="スイに、こんにちは" disabled={disabled} onClick={hello}><SoftSui feeling={suiFeeling} action={suiAction} gaze={suiGaze} quiet={quiet} label={found || reaction === 'hello' ? 'スイ・わくわく' : 'スイ'} /><span aria-hidden="true">スイ</span></button>
       </Scene>
       <p id="seek-caption" className="game-caption" role="status">{caption}</p>
       {found && <button className="seek-share" disabled={disabled || shared} onClick={share}>{shared ? 'いっしょに、見つけたね' : 'スイに、みせる'}</button>}
