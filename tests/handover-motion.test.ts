@@ -4,6 +4,7 @@ import {handoverPose,worldPoint} from '../lib/handover-motion';
 test('new cloud rigs keep their palms on one star through body deformation and transfer',()=>{
  for(let i=0;i<=1000;i++){
   const t=i/100,p=handoverPose(t);for(const b of [p.moco,p.sui])for(const v of Object.values(b))assert.ok(Number.isFinite(v));
+  const first=handoverPose(0);for(const key of ['mocoHand','mocoOther','suiHand','suiOther'] as const)assert.deepEqual(p[key],first[key],'palms must stay fixed to the side of the body');
   if(t>=4.2){const a=worldPoint(p.mocoHand,p.moco);assert.ok(Math.hypot(a.x-p.star.x+32,a.y-p.star.y-13)<1e-8);}
   if(t>=4.2&&t<=6.2){const a=worldPoint(p.suiHand,p.sui);assert.ok(Math.hypot(a.x-p.star.x-32,a.y-p.star.y-13)<1e-8);}
  }
