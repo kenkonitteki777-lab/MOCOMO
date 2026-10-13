@@ -339,3 +339,6 @@ MP4公開検証で問題を検出: 初回の公開ファイルはHTTP200だっ�
 unit16件、型チェック、production build、関連production browser4件成功。1001時点で四つの手の身体内位置が不変、画面幅320–1440pxで手の根元が掌内にあり、接続pathなし・支点一致・顔の収まり・停止再開・動き低減・実記憶なしを確認。共同保持と受け取りの画面を目視。MP4をhandover-v3.mp4へ更新、250フレーム／10.416667秒／1280×960／24fps／201228bytes、全フレームをデコードしatomを検証。Git blobは13d5bd77e8b7afd7ff267b0819f4d45631fed7c8。公開実測は公開後に追記する。
 
 足運び・振り向きの立体感・細かい接触変形、他仲間と残りの絵本、商用最終マスター、実機／親子評価は引き続き未完成。
+
+
+横の手の修正の公開実測: commit d2065d6e95bfc84b6acceb4963b95ef5a8113d19、既存Vercel production dpl_Bd7sR11w7HgvvoVWoZmsoP8LJmypはREADY・同SHA・mocomo-lake.vercel.app割当・aliasErrorなし。公開handoverで接続腕なし、4素材のデコード、320／390／760／1440pxの支点・顔・横はみ出し、再生／停止／再開／再視聴、OS動き低減、前回場面からの導線を確認。最大支点誤差0.0000466903px、実記憶追加なし、JavaScriptエラー0。公開画面を目視。公開v3動画はHTTP200／201228bytes／Git blob13d5bd77e8b7afd7ff267b0819f4d45631fed7c8でローカルと完全一致し、ブラウザで10.416667秒／1280×960／readyState3の実デコードに成功。
