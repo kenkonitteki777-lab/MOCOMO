@@ -101,3 +101,8 @@
 公開実測: 実装commit `caf374ff0540a8329179a9df06f756f6af90c35e` はGitHub mainへ反映。GitHub combined statusは空で自動デプロイが始まらなかったため、Vercelの既存プロジェクト `prj_wGDaKz57zbzG8Y7X4HX9pyRhD02A`（ozma1/mocomo、同じチーム）にGitソースと同SHAを指定してproductionを作成。`dpl_Qf4JheULGmV4gQp3Cft6i5X5gujk` のREADY・commit SHA一致・aliasErrorなし・mocomo-lake.vercel.appへの割当を管理APIで確認。新プロジェクトやAppDeployは使わない。今回、team引数を付けないget_project／list_deployments／get_deployment／create_deploymentは成功し、以前の管理API403だけを現在の不可状態として扱わない。
 
 https://mocomo-lake.vercel.app/shorts/together の1254×1254素材のデコード、再生→途中停止で全身行列と二人の口のパスと字幕が完全固定→続き→二人の笑顔（口の開き14／10）→再視聴、手動・OS動き低減、320／390／760／1440pxの顔の収まりと横はみ出しなしを操作確認。既存shorts/first-starから新場面へのリンクも操作。実記憶追加なし、JavaScriptエラー0。公開MP4は8.416667秒／1280×960、追加の動画デコード確認でreadyState4。Git blob `187f09d84c556903665b26118d6aa6c5c28a05a6`。公開の笑顔画面を日本語フォントで目視。全編の新造形リグ、独立した掌と頭の変形、横後ろマスター、他仲間・残りの絵本、実機・親子の評価、本番認証と家庭別保存は今回未完／未検証。
+
+## 新造形の連続受け渡し — 2026-10-13
+作業環境が古いd183aebへ戻っていたため、変更なしを確認してGitHub main7147bb7へ復元。既存Vercelのproduction READYを確認し再開。新造形の体を二人別々に動かし、体の支点からつながった掌を一つの星へ計算して、差し出す→共同保持→受け取り→手を戻す10秒の専用場面を実装。/shorts/handover を追加し、前回共同保持から導線。詳細は [HANDOVER-RIG-V1.md](HANDOVER-RIG-V1.md)。元の8秒・24秒は維持。
+
+最終検証: unit15件、型チェック、production build、関連production browser4件が成功。1001時点の数値と320–1440pxの32画面時点で掌／星の支点と体／腕の行列、顔の収まり、横はみ出しなしを検証。再生・途中停止・再開・終了・再視聴、手動とOSの動き低減、実記憶追加なしも確認。手のpatternの帯と平坦な代替を目視で修正し、元の綿の掌のSVG表示へ。独立CSS瞬きも共通時計へ修正し停止時のcomputed styleを検証。最終MP4は固定時計250フレーム、H.264／24fps／1280×960／10.416667秒／383706bytes。拾う場面、足運び、横後ろ、掌・頬だけの細かい変形、他仲間・残りの絵本、商用マスター、実機／親子、本番認証と家庭別保存は未完／未検証。公開実測は完了後に追記。
