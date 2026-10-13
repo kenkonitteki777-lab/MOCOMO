@@ -32,6 +32,6 @@ for (let i = 0; i < count; i++) {
 }
 await context.close(); await browser.close();
 await mkdir('public/movies', { recursive: true });
-const result = spawnSync('ffmpeg', ['-y', '-framerate', '24', '-i', `${frames}/%04d.jpg`, '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', `public/movies/${route}-v1.mp4`], { encoding: 'utf8' });
+const result = spawnSync('ffmpeg', ['-y', '-framerate', '24', '-i', `${frames}/%04d.jpg`, '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', handover?'28':'23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', `public/movies/${route}-${handover?"v2":"v1"}.mp4`], { encoding: 'utf8' });
 if (result.status !== 0) throw Error(result.stderr);
-console.log(`public/movies/${route}-v1.mp4`);
+console.log(`public/movies/${route}-${handover?"v2":"v1"}.mp4`);

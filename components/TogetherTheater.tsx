@@ -44,7 +44,7 @@ export default function TogetherTheater({handover=false}:{handover?:boolean}) {
     <div className="theater-controls"><button className="primary" onClick={toggle}>{playing ? 'いったん、とめる' : seconds >= duration ? 'もういちど、みる' : seconds > 0 ? 'つづきを、みる' : 'ふたりを、みる'}</button><button aria-pressed={quiet || reduced} disabled={reduced} onClick={() => setQuiet(v => !v)}>動きをひかえめに</button></div>
     <label className="theater-timeline"><span>すきなところから、みる <small>{Math.floor(seconds)} / {duration}秒</small></span><input type="range" min="0" max={duration} step="0.1" value={seconds} aria-label="ふたりのおはなしの再生位置" aria-valuetext={`${Math.floor(seconds)}秒、${(scenes[frame(seconds)]??scenes[0]).text}`} onChange={e => seek(Number(e.target.value))} /></label>
     <p className="theater-note">音なしでも、ゆっくり楽しめるよ。</p>
-    <a className="movie-file-link" href={handover?"/movies/handover-v1.mp4":"/movies/together-v1.mp4"}>動画でも、みる</a>
+    <a className="movie-file-link" href={handover?"/movies/handover-v2.mp4":"/movies/together-v1.mp4"}>動画でも、みる</a>
   {!handover&&<a className="together-door" href="/shorts/handover"><strong>ほしを、きみに</strong><span>スイからモコモへ、そっと渡すおはなし →</span></a>}
   </section>;
 }

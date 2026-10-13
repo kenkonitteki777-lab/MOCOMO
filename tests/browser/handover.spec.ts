@@ -15,7 +15,8 @@ test('new-design handover stays attached to the bodies and shared star at every 
   });expect(r.max).toBeLessThan(.05);expect(r.fits).toBe(true);expect(r.overflow).toBe(false);
  }}
  await page.setViewportSize({width:390,height:844});await slider.fill('5');await stage.scrollIntoViewIfNeeded();await page.screenshot({path:'test-results/handover-shared.png'});await slider.fill('9.5');await page.screenshot({path:'test-results/handover-received.png'});
- await page.getByRole('button',{name:'動きをひかえめに'}).click();await slider.fill('5');await expect(stage).toHaveAttribute('data-contact','shared');await page.emulateMedia({reducedMotion:'reduce'});await expect(page.getByRole('button',{name:'動きをひかえめに'})).toBeDisabled();expect(errors).toEqual([]);
+ await page.getByRole('button',{name:'動きをひかえめに'}).click();await slider.fill('5');await expect(stage).toHaveAttribute('data-contact','shared');await page.emulateMedia({reducedMotion:'reduce'});await expect(page.getByRole('button',{name:'動きをひかえめに'})).toBeDisabled();await expect(page.locator('.movie-file-link')).toHaveAttribute('href','/movies/handover-v2.mp4');
+ const video=await page.evaluate(()=>new Promise<{duration:number;width:number;height:number;readyState:number}>((resolve,reject)=>{const v=document.createElement('video');v.preload='auto';v.onloadeddata=()=>resolve({duration:v.duration,width:v.videoWidth,height:v.videoHeight,readyState:v.readyState});v.onerror=()=>reject(Error('MP4 cannot decode'));v.src='/movies/handover-v2.mp4';document.body.append(v);v.load();}));expect(video.duration).toBeCloseTo(10.416667,2);expect(video.width).toBe(1280);expect(video.readyState).toBeGreaterThanOrEqual(2);expect(errors).toEqual([]);
 });
 
 test('handover plays, freezes body hands and star together, resumes and replays without memories',async({page})=>{
