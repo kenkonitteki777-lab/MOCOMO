@@ -49,3 +49,10 @@
 制作プロンプト要点：original MOCOMO world on top of clouds, wide open sky, soft cotton sheet whose edges curl up to reveal blue fold paths, asymmetric C-shaped cloud gateway with warm apricot light, low hovering flattened cloud discs, distant drifting loop-shaped cloud, one floating blue raindrop, broad safe foreground for approved character, premium contemporary storybook illustration; no characters, text, castles, conventional village, floating rock islands, rainbow arch or scattered stars。
 目視：開放感、巻き雲の大きな輪郭、手前→道→遠景の誘導を確認。想定より浮く円盤雲が多く、空と道も青の印象が強い。次の制作では要素を減らし、円盤をもっと小さく親しみある形へ寄せ、白いモコモの配置時の識別性とスマホ縦画面の切り取りを検証する。これを最終画質・操作検証済み背景と扱わない。
 先に制作した雲内部の住まいボードは、主舞台ではなく休憩場面の検討用。生成キャラの足と掌に基準差があるため、新しいキャラマスターには採用しない。
+
+
+## 雲の上の探索場面の初実装 — 2026-10-14 JST
+/world/cloud-folds「このむこう、なにがある？」を追加。前回の背景試作を120824bytesのWebPのままpublic/worldへ配置。巻き雲の光、音の雲の波紋、雨粒が逃げて落ちる反応をタップで再生。モコモは気になる→驚く→喜ぶ顔を460ms補間し、手は横の固定座標100,315／335,335、身体と同じ変形を受ける。CloudMocoに既存画面へ影響しない任意のpalmsAtSidesを追加し、新場面だけで使用。ホームに直接の入口を追加。実記憶・報酬カウンターは追加しない。
+音は初期OFF、音の有効化だけではAudioContextを生成せず、音の雲へ触れたときだけ短い3音を順に発音。音を止める／画面が非表示／離脱でcontextを閉じる。手動とOSの動き低減で静止の発見結果を示す。連打は2.6秒の演技内で重複させず、終了後に何度でも再生できる。
+production build、型チェック、unit16件、関連production browser5件が成功（新探索2／既存ホーム3）。初回は背景と操作の重なり、場面のaspect比と最小高さによりスマホで横はみ出しが発生。z-indexとpointer-events、明示した幅とスマホの高さを修正。増分ビルドに古いCSSが残り修正がブラウザへ届かないことをcomputed styleで発見し、.nextを退避してクリーンbuildした。最終ブラウザは実タップで成功。320／390／760／1440px、44px以上の対象、3反応の段階・終了、音の明示開始／停止、静かな表示・OS動き低減、横の掌、キーボード、ホーム往復、実記憶追加なし、JSエラー0を確認。日本語フォントで390pxの雨粒反応後を目視。Reactレビューでタイマー・media listener・audioの終了、画像サイズとコード依存、操作ラベルを確認。追加画像生成は行わず前回素材を再利用。
+これは一つの探索場面。雲の入口を実際にくぐる次の地形、専用の足運び、仲間と連続した探検、絵本・動画のこの世界への移行、実機／親子の評価は未実装・未検証。公開実測は反映後に追記する。
