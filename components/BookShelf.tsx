@@ -2,6 +2,7 @@
 import {useEffect,useState,type ReactNode} from 'react';
 import type {Memory} from '../lib/memory';
 import {pictureStories} from '../lib/story-catalog';
+import RenStoryScene from './RenStoryScene';
 import StoryBook from './StoryBook';
 import FriendshipBook from './FriendshipBook';
 import MovieShelf from './MovieShelf';
@@ -14,11 +15,11 @@ export default function BookShelf({events,children,onHome,onPlay,initialSelectio
  const story=pictureStories.find(s=>s.id===selected);
  return <>
   <div className="book-shelf story-library" role="group" aria-label="読む絵本をえらぶ">
-   {pictureStories.map(s=><button key={s.id} aria-pressed={selected===s.id} onClick={()=>setSelected(s.id)}><img src={s.pages[0].image} width="1536" height="1024" alt="" loading="lazy"/><span>{s.subtitle}</span><strong>{s.title}</strong><small>{s.description}</small>{(positions[s.id]??0)>0&&<small className="reading-resume">{positions[s.id]+1}ページから、つづきを読む</small>}</button>)}
+   {pictureStories.map(s=><button key={s.id} aria-pressed={selected===s.id} onClick={()=>setSelected(s.id)}>{s.id==='ren-wait-v1'?<RenStoryScene index={0} quiet cover/>:<img src={s.pages[0].image} width="1536" height="1024" alt="" loading="lazy"/>}<span>{s.subtitle}</span><strong>{s.title}</strong><small>{s.description}</small>{(positions[s.id]??0)>0&&<small className="reading-resume">{positions[s.id]+1}ページから、つづきを読む</small>}</button>)}
    <button aria-pressed={!story} onClick={()=>setSelected(null)}><span>きみの記憶の絵本</span><strong>きみとの、おはなし</strong><small>いっしょに遊んだ時間から</small></button>
   </div>
   <p className="shelf-note">おはなしを選んで、親子でゆっくり。つづきの場所は、この端末で覚えているよ。</p>
   <MovieShelf quiet={quiet}/>
-  {story?loaded?<FriendshipBook key={story.id} story={story} initialIndex={positions[story.id]??0} onProgress={index=>progress(story.id,index)} onHome={onHome} onPlay={onPlay}/>:<p role="status">絵本をひらいています。</p>:<><StoryBook events={events}/>{children}</>}
+  {story?loaded?<FriendshipBook key={story.id} story={story} initialIndex={positions[story.id]??0} onProgress={index=>progress(story.id,index)} onHome={onHome} onPlay={onPlay} quiet={quiet}/>:<p role="status">絵本をひらいています。</p>:<><StoryBook events={events}/>{children}</>}
  </>;
 }
