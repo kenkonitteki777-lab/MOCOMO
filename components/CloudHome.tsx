@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import SoftSui from './SoftSui';
+import SoftRen from './SoftRen';
 import HomeInteraction from './HomeInteraction';
 import HomeSong from './HomeSong';
 import Character from './Character';
@@ -27,7 +28,7 @@ export default function CloudHome({ready,busy,quiet=false,onVisit,onHello}:{read
     <button className="cloud-house-door" aria-label="モコモのおうち" aria-expanded={houseOpen} aria-controls="moco-cloud-house" disabled={busy} onClick={()=>{setHouseOpen(v=>!v);setFound(null);}}><span>モコモのおうち</span><small>{houseOpen?"おかえり":"のぞいてみる"}</small></button>
     <div className="cloud-map-mascot"><HomeInteraction embedded busy={busy} quiet={quiet} onReply={setReply}/></div>
 
-    {friends.map(f=><button key={f.id} id={`cloud-friend-${f.id}`} className={`cloud-friend friend-motion-${f.id} ${found===f.id?'is-found':''}`} style={{left:`${f.x}%`,top:`${f.y}%`}} disabled={busy} aria-label={found===f.id?`${f.name}がかくれる`:`${f.name}をみつける`} aria-pressed={found===f.id} onClick={()=>{setFound(v=>v===f.id?null:f.id);setHouseOpen(false);}}><span className="peek-character" aria-hidden="true"><span className="home-friend-actor">{f.id==='sui'?<SoftSui feeling={found===f.id?'joy':'focused'} action={found===f.id?'nod':'watch'} gaze={-1} quiet={quiet}/>:<Character id={f.id} mood={found===f.id?'wonder':'happy'}/>}</span></span><span className="peek-spark" aria-hidden="true">✧</span></button>)}
+    {friends.map(f=><button key={f.id} id={`cloud-friend-${f.id}`} className={`cloud-friend friend-motion-${f.id} ${found===f.id?'is-found':''}`} style={{left:`${f.x}%`,top:`${f.y}%`}} disabled={busy} aria-label={found===f.id?`${f.name}がかくれる`:`${f.name}をみつける`} aria-pressed={found===f.id} onClick={()=>{setFound(v=>v===f.id?null:f.id);setHouseOpen(false);}}><span className="peek-character" aria-hidden="true"><span className="home-friend-actor">{f.id==='sui'?<SoftSui feeling={found===f.id?'joy':'focused'} action={found===f.id?'nod':'watch'} gaze={-1} quiet={quiet}/>:f.id==='ren'?<SoftRen feeling={found===f.id?'joy':'curious'} gaze={1} quiet={quiet}/>:<Character id={f.id} mood={found===f.id?'wonder':'happy'}/>}</span></span><span className="peek-spark" aria-hidden="true">✧</span></button>)}
    </div>
    <p className="moco-reply world-moco-reply" aria-live="polite">{reply}</p>
    {houseOpen?<section className="cloud-house-panel" id="moco-cloud-house" aria-label="モコモのおうちの中"><h2>おかえり。ふわふわのおうちへ。</h2><p>雲のいすで、ひと休み。絵本も、ここにあるよ。</p><div><button disabled={busy||!ready} onClick={()=>onVisit('PLAY','rest','cloud-house-rest')}>おうちで、ひと休み</button><button disabled={busy} onClick={()=>onVisit('BOOK',undefined,'cloud-house-book')}>おうちで、絵本</button><button onClick={()=>setHouseOpen(false)}>また、あとで</button></div></section>:null}
