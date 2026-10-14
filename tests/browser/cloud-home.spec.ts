@@ -3,7 +3,7 @@ test('cloud-home places open all five games and the picture-book shelf without i
  await page.setViewportSize({width:390,height:844});await page.goto('/');
  const home=page.getByRole('region',{name:'モコモの雲のおうち',exact:true});await expect(home).toBeVisible();
  const art=home.locator('.cloud-home-art');expect(await art.evaluate(async e=>{const image=e as HTMLImageElement;await image.decode();return image.naturalWidth>=1024&&image.naturalWidth===image.naturalHeight;})).toBe(true);
- await expect(art).toHaveAttribute('src','/world/cloud-home-v3.webp');await expect(home.locator('.cloud-home-map')).toHaveAttribute('data-world','cloud-home-v3');await expect(home.locator('.cloud-map-mascot .cloud-moco')).toHaveAttribute('data-master','approved-cloud-side-palms-v4');
+ await expect(art).toHaveAttribute('src','/world/cloud-home-v3.webp');await expect(home.locator('.cloud-home-map')).toHaveAttribute('data-world','cloud-home-v3');await expect(home.locator('.cloud-map-mascot .cloud-moco')).toHaveAttribute('data-master','approved-cloud-side-palms-v4');await expect(home.locator('.home-interaction')).toHaveCount(1);await expect(home.locator('.soft-sui')).toHaveAttribute('data-master','sui-soft-v2');
  const before=await page.evaluate(()=>localStorage.getItem('mocomo.guest.memories.v1'));
  for(const width of[320,390,760,1440]){
   await page.setViewportSize({width,height:1000});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

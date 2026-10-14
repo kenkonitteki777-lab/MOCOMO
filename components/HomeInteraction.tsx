@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import Moco from './Moco';
+import CloudMoco from './CloudMoco';
 type Kind='hello'|'cloud'|'star'|'wind';
 type Phase='idle'|'notice'|'react'|'settle';
 const replies:Record<Kind,string[]>={
@@ -14,7 +15,7 @@ export function CloudToy({kind}:{kind:Exclude<Kind,'hello'>}){
  if(kind==='wind')return <svg viewBox="0 0 64 64" fill="none" stroke="#8baeb2" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M9 25h31c17 0 13-16 5-13M15 34h33M9 43h25c17 0 11 15 5 12"/><circle cx="17" cy="16" r="2" fill="#b3d2ce" stroke="none"/></svg>;
  return <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M16 47C3 47 4 30 16 28c0-13 20-17 26-5 16-3 23 24 6 24z" fill="#fffdf4" stroke="#b9cbd0" strokeWidth="2"/><path d="M23 38q9 7 18 0" stroke="#a2bdb8" fill="none" strokeWidth="2" strokeLinecap="round"/></svg>;
 }
-export default function HomeInteraction({busy,quiet=false,onReply}:{busy:boolean;quiet?:boolean;onReply:(reply:string)=>void}){
+export default function HomeInteraction({busy,quiet=false,onReply,embedded=false}:{busy:boolean;quiet?:boolean;onReply:(reply:string)=>void;embedded?:boolean}){
  const [kind,setKind]=useState<Kind>('hello');const [phase,setPhase]=useState<Phase>('idle');const [greeted,setGreeted]=useState(false);const [variant,setVariant]=useState(0);
  const timers=useRef<ReturnType<typeof setTimeout>[]>([]);const locked=useRef(false);const counts=useRef<Record<Kind,number>>({hello:0,cloud:0,star:0,wind:0});
  function clear(){timers.current.forEach(clearTimeout);timers.current=[];locked.current=false;}
@@ -26,9 +27,9 @@ export default function HomeInteraction({busy,quiet=false,onReply}:{busy:boolean
  const responding=phase==='react'||phase==='settle';
  const feeling=phase==='notice'?'curious':responding?(kind==='star'?(variant?'shy':'proud'):kind==='wind'?(variant?'sleepy':'playful'):kind==='hello'&&variant?'shy':'joy'):'calm';
  const mood=phase==='notice'?'wonder':responding?(kind==='star'?'thanks':kind==='wind'?(variant?'rest':'listen'):kind==='cloud'?'tickle':variant?'listen':'laugh'):'happy';
- return <div className={`home-interaction ${quiet?'interaction-quiet':''}`} data-kind={kind} data-phase={phase}>
-  <div className="home-touch-stage"><div className="touch-cloud-floor" aria-hidden="true"/><button className="moco-greeting" aria-label="モコモにさわる" aria-pressed={greeted} disabled={busy||phase!=='idle'} onClick={()=>interact('hello')}><span className="home-touch-moco"><span className="new-moco-actor" data-feeling={feeling} role="img" aria-label={`モコモ・${phase==='idle'?'ほっとする':mood==='wonder'?'わくわく':mood==='thanks'?'ありがとう':mood==='rest'?'ひとやすみ':mood==='listen'?'きいている':'にこにこ'}`}><span aria-hidden="true"><Moco mood={mood}/></span></span></span></button>{responding&&kind==='wind'&&<span className="moco-wind-trails" aria-hidden="true"><CloudToy kind="wind"/></span>}</div>
-  <small>もこもと、あそぼう</small>
+ return <div className={`home-interaction ${embedded?'home-interaction-world':''} ${quiet?'interaction-quiet':''}`} data-kind={kind} data-phase={phase}>
+  <div className="home-touch-stage"><div className="touch-cloud-floor" aria-hidden="true"/><button className="moco-greeting" aria-label="モコモにさわる" aria-pressed={greeted} disabled={busy||phase!=='idle'} onClick={()=>interact('hello')}><span className="home-touch-moco"><span className="new-moco-actor" data-feeling={feeling} role="img" aria-label={`モコモ・${phase==='idle'?'ほっとする':mood==='wonder'?'わくわく':mood==='thanks'?'ありがとう':mood==='rest'?'ひとやすみ':mood==='listen'?'きいている':'にこにこ'}`}><span aria-hidden="true">{embedded?<CloudMoco palmsAtSides holdingStar={responding&&kind==='star'} feeling={feeling} action="rest" quiet={quiet}/>:<Moco mood={mood}/>}</span></span></span></button>{responding&&kind==='wind'&&<span className="moco-wind-trails" aria-hidden="true"><CloudToy kind="wind"/></span>}</div>
+  {embedded?null:<small>もこもと、あそぼう</small>}
   <div className="home-touch-toys" aria-label="モコモとふれあう道具">{(['cloud','star','wind'] as const).map(toy=><button key={toy} disabled={busy||phase!=='idle'} className={`home-toy toy-${toy}`} aria-label={toy==='cloud'?'雲を、ぽんっ':toy==='star'?'モコモに星をみせる':'モコモに風をおくる'} onClick={()=>interact(toy)}><CloudToy kind={toy}/><span>{toy==='cloud'?'ぽんっ':toy==='star'?'きらきら':'そよそよ'}</span></button>)}</div>
  </div>;
 }
